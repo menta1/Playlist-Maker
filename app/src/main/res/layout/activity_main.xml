@@ -1,18 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/padding_top"
+    android:paddingStart="17dp"
+    android:paddingEnd="@dimen/padding_end"
+    android:background="#3772E7">
+
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="@string/playlist_maker"
+        android:textSize="@dimen/main_text_size"
+        android:fontFamily="@font/yt_medium"
+        android:textColor="@color/white"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="12dp">
+
+
+        <Button
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/yt_medium"
+            android:letterSpacing="0"
+            android:text="@string/Search"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="@dimen/main_text_size"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/search"
+            app:iconGravity="textStart"
+            app:iconPadding="@dimen/icon_padding"
+            app:iconTint="@color/black"
+            android:foreground="?attr/selectableItemBackground"
+            />
+
+        <Button
+            android:id="@+id/mediateka"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:text="@string/mediateka"
+            android:textColor="@color/black"
+            android:textSize="@dimen/main_text_size"
+            android:letterSpacing="0"
+            android:textAllCaps="false"
+            android:fontFamily="@font/yt_medium"
+            app:icon="@drawable/mediateka"
+            app:iconGravity="textStart"
+            app:iconPadding="@dimen/icon_padding"
+            app:iconTint="@color/black"
+            app:cornerRadius="16dp"
+            android:foreground="?attr/selectableItemBackground"
+            />
+
+        <Button
+            android:id="@+id/settings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:text="@string/Settings"
+            android:textColor="@color/black"
+            android:textSize="@dimen/main_text_size"
+            android:letterSpacing="0"
+            android:textAllCaps="false"
+            android:fontFamily="@font/yt_medium"
+            app:icon="@drawable/settings"
+            app:iconGravity="textStart"
+            app:iconPadding="@dimen/icon_padding"
+            app:iconTint="@color/black"
+            app:cornerRadius="16dp"
+            android:foreground="?attr/selectableItemBackground"
+        />
+
+    </LinearLayout>
+
+</LinearLayout>
