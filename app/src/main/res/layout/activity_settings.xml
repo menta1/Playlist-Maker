@@ -41,7 +41,7 @@
         android:textSize="@dimen/settings_text_size"
         android:letterSpacing="0"
         android:fontFamily="@font/yt_medium"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <Button
@@ -54,11 +54,11 @@
         android:letterSpacing="0"
         android:text="@string/share"
         android:textAllCaps="false"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:textSize="@dimen/settings_text_size"
         app:icon="@drawable/share"
         app:iconGravity="end"
-        app:iconTint="#AEAFB4" />
+        app:iconTint="@color/grey" />
 
     <Button
         android:layout_width="match_parent"
@@ -68,13 +68,13 @@
         android:textSize="@dimen/settings_text_size"
         android:letterSpacing="0"
         android:fontFamily="@font/yt_medium"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:textAllCaps="false"
         android:gravity="start"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         app:icon="@drawable/support"
         app:iconGravity="end"
-        app:iconTint="#AEAFB4"/>
+        app:iconTint="@color/grey"/>
 
     <Button
         android:layout_width="match_parent"
@@ -83,13 +83,13 @@
         android:textSize="@dimen/settings_text_size"
         android:letterSpacing="0"
         android:fontFamily="@font/yt_medium"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:textAllCaps="false"
         android:gravity="left"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         app:icon="@drawable/arrow_forward"
         app:iconGravity="end"
-        app:iconTint="#AEAFB4"/>
+        app:iconTint="@color/grey"/>
 
 
 

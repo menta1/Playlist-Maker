@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="padding_end">15dp</dimen>
+    <dimen name="padding_end">14dp</dimen>
     <dimen name="padding_top">14dp</dimen>
     <dimen name="icon_padding">8dp</dimen>
     <dimen name="main_text_size">22sp</dimen>
     <dimen name="settings_text_size">16sp</dimen>
-
+    <dimen name="cornerRadius">16dp</dimen>
 </resources>

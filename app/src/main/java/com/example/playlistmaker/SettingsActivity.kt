@@ -15,6 +15,7 @@ class SettingsActivity : AppCompatActivity() {
         backButton.setOnClickListener{
             val backButtonIntent = Intent(this, MainActivity::class.java)
             startActivity(backButtonIntent)
+            finish()
         }
     }
 }
