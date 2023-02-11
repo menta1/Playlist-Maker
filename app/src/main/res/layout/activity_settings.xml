@@ -9,26 +9,27 @@
     android:paddingTop="@dimen/padding_top"
     android:paddingStart="4dp"
     android:paddingEnd="@dimen/padding_end"
-    android:background="@color/white">
+    android:background="?attr/colorOnPrimary">
 
     <Button
         android:id="@+id/backButtonSettingsActivity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:text="@string/Settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:textSize="@dimen/main_text_size"
         android:letterSpacing="0"
-        android:fontFamily="@font/yt_regular"
-        android:textColor="@color/black"
+        android:fontFamily="@font/ys_display_regular"
+        android:textFontWeight="500"
+        android:textColor="?attr/colorOnSecondary"
         android:textAllCaps="false"
         android:gravity="left"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         app:icon="@drawable/arrow_back"
         app:iconGravity="textStart"
         app:iconPadding="24dp"
-        app:iconTint="@color/black">
-
+        app:iconTint="?attr/colorOnSecondary"
+        tools:ignore="RtlHardcoded,UnusedAttribute">
         </Button>
 
     <Switch
@@ -40,57 +41,25 @@
         android:text="@string/black"
         android:textSize="@dimen/settings_text_size"
         android:letterSpacing="0"
-        android:fontFamily="@font/yt_medium"
-        android:textColor="@color/black"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        android:fontFamily="@font/ys_display_medium"
+        android:textFontWeight="400"
+        android:textColor="?attr/colorOnSecondary"
+        tools:ignore="UnusedAttribute,UseSwitchCompatOrMaterialXml" />
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="21dp"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:fontFamily="@font/yt_medium"
-        android:gravity="start"
-        android:letterSpacing="0"
         android:text="@string/share"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textSize="@dimen/settings_text_size"
         app:icon="@drawable/share"
-        app:iconGravity="end"
-        app:iconTint="@color/grey" />
+        style="@style/buttonSettingsMenu"/>
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="21dp"
         android:text="@string/help"
-        android:textSize="@dimen/settings_text_size"
-        android:letterSpacing="0"
-        android:fontFamily="@font/yt_medium"
-        android:textColor="@color/black"
-        android:textAllCaps="false"
-        android:gravity="start"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
         app:icon="@drawable/support"
-        app:iconGravity="end"
-        app:iconTint="@color/grey"/>
+        style="@style/buttonSettingsMenu"/>
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="@string/terms"
-        android:textSize="@dimen/settings_text_size"
-        android:letterSpacing="0"
-        android:fontFamily="@font/yt_medium"
-        android:textColor="@color/black"
-        android:textAllCaps="false"
-        android:gravity="left"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
         app:icon="@drawable/arrow_forward"
-        app:iconGravity="end"
-        app:iconTint="@color/grey"/>
-
+        style="@style/buttonSettingsMenu"/>
 
 
 </LinearLayout>
