@@ -47,16 +47,19 @@
         tools:ignore="UnusedAttribute,UseSwitchCompatOrMaterialXml" />
 
     <Button
+        android:id="@+id/shareApp"
         android:text="@string/share"
         app:icon="@drawable/share"
         style="@style/buttonSettingsMenu"/>
 
     <Button
+        android:id="@+id/writeSupport"
         android:text="@string/help"
         app:icon="@drawable/support"
         style="@style/buttonSettingsMenu"/>
 
     <Button
+        android:id="@+id/termsUse"
         android:text="@string/terms"
         app:icon="@drawable/arrow_forward"
         style="@style/buttonSettingsMenu"/>
