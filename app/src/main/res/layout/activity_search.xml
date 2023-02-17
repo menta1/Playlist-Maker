@@ -11,11 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
+            android:id="@+id/backButton"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
-            android:src="@drawable/arrow_back">
+            android:src="@drawable/arrow_back"
+            app:tint="?attr/colorOnSecondary">
         </ImageView>
         <TextView
             android:id="@+id/back"
@@ -34,25 +36,45 @@
             </TextView>
     </FrameLayout>
 
+    
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="24dp"
+        >
         <EditText
+            android:id="@+id/inputEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="36dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="24dp"
-            android:background="@color/light_grey"
-            android:inputType="text"
-            android:hint="@string/Search"
-            android:lines="1"
-            android:textColor="@color/black"
-            app:icon="@drawable/search"
-            app:iconGravity = "textStart"
+            android:background="@drawable/rounded_edittext"
+            android:backgroundTint="@color/light_grey"
             android:drawableStart="@drawable/search"
             android:drawablePadding="8dp"
             android:drawableTint="@color/grey"
-            app:cornerRadius = "20dp"
-            >
+            android:hint="@string/Search"
+            android:inputType="text"
+            android:lines="1"
+            android:minHeight="36dp"
+            android:paddingStart="13dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
+            android:textSize="16sp"
+            app:icon="@drawable/search"
+            app:iconGravity="textStart">
         </EditText>
 
+        <ImageView
+            android:id="@+id/clearButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/clear_icon"
+            android:layout_gravity="end"
+            android:paddingTop="12dp"
+            android:paddingEnd="14dp"
+            android:visibility="gone"
+            >
+        </ImageView>
+    </FrameLayout>
 </LinearLayout>
