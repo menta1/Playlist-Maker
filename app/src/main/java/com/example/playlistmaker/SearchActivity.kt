@@ -1,12 +1,14 @@
 package com.example.playlistmaker
 
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 
@@ -18,7 +20,7 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(TEXT_EDITTEXT, inputEditText.toString())
+        outState.putString(TEXT_EDITTEXT, inputEditText.text.toString())
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -41,6 +43,7 @@ class SearchActivity : AppCompatActivity() {
 
         clearButton.setOnClickListener{
             inputEditText.setText("")
+            it.hideKeyboard()
         }
 
         var searchTextWatcher = object : TextWatcher{
@@ -67,6 +70,10 @@ class SearchActivity : AppCompatActivity() {
         }else{
             View.VISIBLE
         }
+    }
+    fun View.hideKeyboard() {
+        val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(windowToken, 0)
     }
 
 }

@@ -21,7 +21,7 @@ class   SettingsActivity : AppCompatActivity() {
 
         shareAppButton.setOnClickListener{
             val shareAppButtonIntent = Intent(Intent.ACTION_SEND)
-            shareAppButtonIntent.putExtra(Intent.EXTRA_TEXT, "https://practicum.yandex.ru/")
+            shareAppButtonIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_app_link))
             shareAppButtonIntent.type = "plain/text"
 
             startActivity(shareAppButtonIntent)
@@ -29,14 +29,14 @@ class   SettingsActivity : AppCompatActivity() {
         writeSupportButton.setOnClickListener{
             val writeSupportButtonIntent = Intent(Intent.ACTION_SENDTO)
             writeSupportButtonIntent.data = Uri.parse("mailto:")
-            writeSupportButtonIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("exen1993@gmail.com"))
-            writeSupportButtonIntent.putExtra(Intent.EXTRA_TEXT, "Спасибо разработчикам и разработчицам за крутое приложение!")
-            writeSupportButtonIntent.putExtra(Intent.EXTRA_SUBJECT, "Сообщение разработчикам и разработчицам приложения Playlist Maker")
+            writeSupportButtonIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.extra_text_write_email)))
+            writeSupportButtonIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.extra_text_write_support))
+            writeSupportButtonIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.extra_text_write_subject))
             startActivity(writeSupportButtonIntent)
         }
         termsUseButton.setOnClickListener{
             val termsUseButtonIntent = Intent(Intent.ACTION_VIEW, Uri.parse(
-                "https://yandex.ru/legal/practicum_offer/"))
+                getString(R.string.terms_use_link)))
             startActivity(termsUseButtonIntent)
         }
     }
