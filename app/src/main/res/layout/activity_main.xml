@@ -31,19 +31,25 @@
 
 
         <Button
-            android:id="@+id/search"
+            android:id="@+id/searchButton"
+            android:layout_width = "match_parent"
+            android:layout_height= "match_parent"
             android:text="@string/Search"
             app:icon="@drawable/search"
             style="@style/buttonMainMenu"/>
 
         <Button
-            android:id="@+id/mediateka"
+            android:id="@+id/mediatekaButton"
+            android:layout_width = "match_parent"
+            android:layout_height= "match_parent"
             android:text="@string/mediateka"
             app:icon="@drawable/mediateka"
             style="@style/buttonMainMenu" />
 
         <Button
-            android:id="@+id/settings"
+            android:id="@+id/settingsButton"
+            android:layout_width = "match_parent"
+            android:layout_height= "match_parent"
             android:text="@string/Settings"
             app:icon="@drawable/settings"
             style="@style/buttonMainMenu"/>

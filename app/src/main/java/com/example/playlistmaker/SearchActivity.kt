@@ -14,6 +14,8 @@ import android.widget.ImageView
 
 class SearchActivity : AppCompatActivity() {
     lateinit var inputEditText: EditText
+    lateinit var backButton: ImageView
+    lateinit var clearButton: ImageView
     companion object{
         const val TEXT_EDITTEXT = "TEXT_EDITTEXT"
     }
@@ -32,10 +34,9 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-
-        val backButton = findViewById<ImageView>(R.id.backButton)
-        inputEditText = findViewById<EditText>(R.id.inputEditText)
-        val clearButton = findViewById<ImageView>(R.id.clearButton)
+        backButton = findViewById(R.id.backButton)
+        inputEditText = findViewById(R.id.inputEditText)
+        clearButton = findViewById(R.id.clearButton)
 
         backButton.setOnClickListener{
             finish()
