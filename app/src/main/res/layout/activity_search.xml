@@ -1,16 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context=".SearchActivity">
-
-<TextView
-    android:id="@+id/message"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:gravity="center"
-    android:text="Привет, Android разработка — это круто!\n .SearchActivity"/>
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SearchActivity">
 
-</FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/arrow_back"
+            app:tint="?attr/colorOnSecondary">
+        </ImageView>
+        <TextView
+            android:id="@+id/back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="14dp"
+            android:text="@string/Search"
+            android:textSize="@dimen/main_text_size"
+            android:letterSpacing="0"
+            android:fontFamily="@font/ys_display_medium"
+            android:textFontWeight="500"
+            android:textColor="?attr/colorOnSecondary"
+            android:textAllCaps="false"
+            tools:targetApi="p">
+            </TextView>
+    </FrameLayout>
+
+    
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="24dp"
+        >
+        <EditText
+            android:id="@+id/inputEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edittext"
+            android:backgroundTint="@color/light_grey"
+            android:drawableStart="@drawable/search"
+            android:drawablePadding="8dp"
+            android:drawableTint="@color/grey"
+            android:hint="@string/Search"
+            android:inputType="text"
+            android:lines="1"
+            android:minHeight="36dp"
+            android:paddingStart="13dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
+            android:textSize="16sp"
+            app:icon="@drawable/search"
+            app:iconGravity="textStart">
+        </EditText>
+
+        <ImageView
+            android:id="@+id/clearButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/clear_icon"
+            android:layout_gravity="end"
+            android:paddingTop="12dp"
+            android:paddingEnd="14dp"
+            android:visibility="gone"
+            >
+        </ImageView>
+    </FrameLayout>
+</LinearLayout>

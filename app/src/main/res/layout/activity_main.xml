@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/padding_top"
     android:paddingStart="17dp"
     android:paddingEnd="@dimen/padding_end"
-    android:background="@color/background_main">
+    android:background="?attr/colorPrimary">
 
 
     <TextView
@@ -18,7 +18,8 @@
         android:layout_height="wrap_content"
         android:text="@string/playlist_maker"
         android:textSize="@dimen/main_text_size"
-        android:fontFamily="@font/yt_medium"
+        android:fontFamily="@font/ys_display_medium"
+        android:textFontWeight="500"
         android:textColor="@color/white"/>
 
     <LinearLayout
@@ -30,67 +31,28 @@
 
 
         <Button
-            android:id="@+id/search"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="1dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:fontFamily="@font/yt_medium"
-            android:letterSpacing="0"
+            android:id="@+id/searchButton"
+            android:layout_width = "match_parent"
+            android:layout_height= "match_parent"
             android:text="@string/Search"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/main_text_size"
-            app:cornerRadius="@dimen/cornerRadius"
             app:icon="@drawable/search"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/icon_padding"
-            app:iconTint="@color/black"
-            android:foreground="?attr/selectableItemBackground"
-            />
+            style="@style/buttonMainMenu"/>
 
         <Button
-            android:id="@+id/mediateka"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="1dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:id="@+id/mediatekaButton"
+            android:layout_width = "match_parent"
+            android:layout_height= "match_parent"
             android:text="@string/mediateka"
-            android:textColor="@color/black"
-            android:textSize="@dimen/main_text_size"
-            android:letterSpacing="0"
-            android:textAllCaps="false"
-            android:fontFamily="@font/yt_medium"
             app:icon="@drawable/mediateka"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/icon_padding"
-            app:iconTint="@color/black"
-            app:cornerRadius="@dimen/cornerRadius"
-            android:foreground="?attr/selectableItemBackground"
-            />
+            style="@style/buttonMainMenu" />
 
         <Button
-            android:id="@+id/settings"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="16dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:id="@+id/settingsButton"
+            android:layout_width = "match_parent"
+            android:layout_height= "match_parent"
             android:text="@string/Settings"
-            android:textColor="@color/black"
-            android:textSize="@dimen/main_text_size"
-            android:letterSpacing="0"
-            android:textAllCaps="false"
-            android:fontFamily="@font/yt_medium"
             app:icon="@drawable/settings"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/icon_padding"
-            app:iconTint="@color/black"
-            app:cornerRadius="@dimen/cornerRadius"
-            android:foreground="?attr/selectableItemBackground"
-        />
+            style="@style/buttonMainMenu"/>
 
     </LinearLayout>
 
