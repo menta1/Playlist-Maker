@@ -16,4 +16,5 @@
     <string name="name_music_group">TextView</string>
     <string name="song_duration">TextView</string>
     <string name="song_name">TextView</string>
+    <string name="image_album">Image album</string>
 </resources>

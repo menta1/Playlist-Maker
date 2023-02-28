@@ -15,11 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class SearchActivity : AppCompatActivity() {
-    lateinit var inputEditText: EditText
-    lateinit var backButton: ImageView
-    lateinit var clearButton: ImageView
-    lateinit var recyclerView: RecyclerView
-    var adapter = TrackAdapter()
+    private lateinit var inputEditText: EditText
+    private lateinit var backButton: ImageView
+    private lateinit var clearButton: ImageView
+    private lateinit var recyclerView: RecyclerView
+    private val adapter = TrackAdapter()
 
     companion object{
         const val TEXT_EDITTEXT = "TEXT_EDITTEXT"

@@ -32,8 +32,7 @@ class TrackAdapter: RecyclerView.Adapter<TrackAdapter.TrackHolder>() {
                     trackTime.text = model.trackTime
                     Glide.with(itemView)
                         .load(model.artworkUrl100)
-                        .placeholder(R.drawable.ic_launcher_background)
-                        .error(R.drawable.ic_launcher_foreground)
+                        .placeholder(R.drawable.placeholder)
                         .centerCrop()
                         .transform(RoundedCorners(4))
                         .into(artworkUrl100)
