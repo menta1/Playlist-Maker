@@ -11,11 +11,16 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class SearchActivity : AppCompatActivity() {
     lateinit var inputEditText: EditText
     lateinit var backButton: ImageView
     lateinit var clearButton: ImageView
+    lateinit var recyclerView: RecyclerView
+    var adapter = TrackAdapter()
+
     companion object{
         const val TEXT_EDITTEXT = "TEXT_EDITTEXT"
     }
@@ -37,6 +42,9 @@ class SearchActivity : AppCompatActivity() {
         backButton = findViewById(R.id.backButton)
         inputEditText = findViewById(R.id.inputEditText)
         clearButton = findViewById(R.id.clearButton)
+        recyclerView = findViewById(R.id.recyclerSongItem)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
 
         backButton.setOnClickListener{
             finish()
