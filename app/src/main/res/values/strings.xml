@@ -17,4 +17,9 @@
     <string name="song_duration">TextView</string>
     <string name="song_name">TextView</string>
     <string name="image_album">Image album</string>
+    <string name="nothing_was_found">Ничего не нашлось</string>
+    <string name="communication_problems_1">Проблемы со связью</string>
+    <string name="communication_problems_2">Загрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="clear_history">Очистить историю</string>
+    <string name="refresh">Обновить</string>
 </resources>

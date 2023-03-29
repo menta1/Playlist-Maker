@@ -15,6 +15,7 @@ class SettingsActivity : AppCompatActivity() {
         val shareAppButton = findViewById<Button>(R.id.shareApp)
         val writeSupportButton = findViewById<Button>(R.id.writeSupport)
         val termsUseButton = findViewById<Button>(R.id.termsUse)
+
         backButton.setOnClickListener {
             finish()
         }
