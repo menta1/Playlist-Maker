@@ -3,11 +3,13 @@
     <dimen name="padding_end">14dp</dimen>
     <dimen name="padding_top">14dp</dimen>
     <dimen name="indent_8">8dp</dimen>
+    <dimen name="indent_5">5dp</dimen>
+    <dimen name="indent_45">45dp</dimen>
+    <dimen name="cornerRadius">16dp</dimen>
     <dimen name="main_text_size">22sp</dimen>
     <dimen name="text_size_16">16sp</dimen>
     <dimen name="text_size_11">11sp</dimen>
-    <dimen name="cornerRadius">16dp</dimen>
-    <dimen name="indent_5">5dp</dimen>
-    <dimen name="indent_45">45dp</dimen>
+    <dimen name="text_size_19">19sp</dimen>
+
 
 </resources>
