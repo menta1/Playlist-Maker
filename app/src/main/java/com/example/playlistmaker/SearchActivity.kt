@@ -2,12 +2,10 @@ package com.example.playlistmaker
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.media.MediaCommunicationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -37,7 +35,6 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var recyclerLayout: FrameLayout
     private val adapter = TrackAdapter()
-    private val iTunesBaseUrl = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunesBaseUrl)
         .addConverterFactory(GsonConverterFactory.create())
@@ -47,6 +44,7 @@ class SearchActivity : AppCompatActivity() {
 
     companion object{
         const val TEXT_EDITTEXT = "TEXT_EDITTEXT"
+        const val iTunesBaseUrl = "https://itunes.apple.com"
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -105,7 +103,7 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.addTextChangedListener(searchTextWatcher)
 
         refreshButton.setOnClickListener{
-            ITunesServiceSearch()
+            iTunesServiceSearch()
         }
 
         clearHistory.setOnClickListener{
@@ -121,14 +119,14 @@ class SearchActivity : AppCompatActivity() {
                 progressBar.visibility = View.VISIBLE
                 communicationProblems.visibility = View.GONE
                 nothingWasFound.visibility = View.GONE
-                ITunesServiceSearch()
+                iTunesServiceSearch()
             }
             false
         }
 
     }
 
-    fun ITunesServiceSearch(){
+    fun iTunesServiceSearch(){
         if(inputEditText.text.isNotEmpty()){
             iTunesService.search(inputEditText.text.toString()).enqueue(object : Callback<TrackResponse>{
                 override fun onResponse(
@@ -146,31 +144,35 @@ class SearchActivity : AppCompatActivity() {
                             adapter.notifyDataSetChanged()
                         }
                         if(tracks.isEmpty()){
-                            refreshButton.visibility = View.GONE
-                            progressBar.visibility = View.GONE
-                            recyclerView.visibility = View.GONE
-                            recyclerLayout.visibility = View.GONE
-                            nothingWasFound.visibility = View.VISIBLE
+                            visibleContent(false)
                         }
 
                     }else{
-                        refreshButton.visibility = View.GONE
-                        progressBar.visibility = View.GONE
-                        recyclerView.visibility = View.GONE
-                        recyclerLayout.visibility = View.GONE
-                        nothingWasFound.visibility = View.VISIBLE
+                        visibleContent(false)
                     }
 
                 }
                 override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                    progressBar.visibility = View.GONE
-                    recyclerView.visibility = View.GONE
-                    recyclerLayout.visibility = View.GONE
-                    nothingWasFound.visibility = View.GONE
-                    communicationProblems.visibility = View.VISIBLE
-                    refreshButton.visibility = View.VISIBLE
+                    visibleContent(true)
                 }
             })
+        }
+    }
+
+    fun visibleContent(fail: Boolean){
+        if(fail) {
+            progressBar.visibility = View.GONE
+            recyclerView.visibility = View.GONE
+            recyclerLayout.visibility = View.GONE
+            nothingWasFound.visibility = View.GONE
+            communicationProblems.visibility = View.VISIBLE
+            refreshButton.visibility = View.VISIBLE
+        }else{
+            refreshButton.visibility = View.GONE
+            progressBar.visibility = View.GONE
+            recyclerView.visibility = View.GONE
+            recyclerLayout.visibility = View.GONE
+            nothingWasFound.visibility = View.VISIBLE
         }
     }
     fun clearButtonVisibility(s: CharSequence?) : Int{
