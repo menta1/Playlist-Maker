@@ -78,31 +78,50 @@
 
     </FrameLayout>
 
-    <FrameLayout
-        android:id="@+id/recycler_layout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerSongItem"
+        <LinearLayout
+            android:id="@+id/recycler_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/clear_history"
-            android:layout_width="148dp"
-            android:layout_height="36dp"
-            android:layout_gravity="bottom|center"
-            android:background="@drawable/button_radius_54"
-            android:fontFamily="@font/ys_display_medium"
-            android:letterSpacing="0"
-            android:text="@string/clear_history"
-            android:textAllCaps="false"
-            android:textColor="?attr/colorOnPrimary"
-            android:textSize="14sp"
-            android:visibility="gone"/>
-    </FrameLayout>
+            <TextView
+                android:id="@+id/you_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center"
+                android:layout_marginTop="50dp"
+                android:fontFamily="@font/ys_display_medium"
+                android:text="@string/you_search"
+                android:textColor="?attr/colorOnSecondary"
+                android:textSize="@dimen/text_size_19"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerSongItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/clear_history"
+                android:layout_width="148dp"
+                android:layout_height="36dp"
+                android:layout_gravity="bottom|center"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/button_radius_54"
+                android:fontFamily="@font/ys_display_medium"
+                android:letterSpacing="0"
+                android:text="@string/clear_history"
+                android:textAllCaps="false"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="14sp"
+                android:visibility="gone" />
+        </LinearLayout>
+    </ScrollView>
 
     <ProgressBar
         android:id="@+id/progressBar"
