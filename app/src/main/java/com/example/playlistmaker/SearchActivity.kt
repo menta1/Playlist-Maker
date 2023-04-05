@@ -40,8 +40,6 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val iTunesService = retrofit.create(ITunesSearchApi::class.java)
-    private var tracks = ArrayList<Track>()
-
 
     companion object {
         const val TEXT_EDITTEXT = "TEXT_EDITTEXT"
@@ -62,7 +60,6 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-
         backButton = findViewById(R.id.backButton)
         inputEditText = findViewById(R.id.inputEditText)
         clearButton = findViewById(R.id.clearButton)
@@ -76,12 +73,8 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
         youSearch = findViewById(R.id.you_search)
         sharedPrefs = getSharedPreferences(SHARED_PREF, MODE_PRIVATE)
         searchHistory = SearchHistory(sharedPrefs)
-        adapter.tracks = tracks
-
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
-
-
 
         backButton.setOnClickListener {
             finish()
@@ -90,6 +83,18 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
         clearButton.setOnClickListener {
             inputEditText.setText("")
             it.hideKeyboard()
+            adapter.setTracks(searchHistory.showTrackHistory())
+            progressBar.visibility = View.GONE
+            nothingWasFound.visibility = View.GONE
+            communicationProblems.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
+            recyclerLayout.visibility = View.VISIBLE
+            clearHistory.visibility = View.VISIBLE
+            if (searchHistory.showTrackHistory().isEmpty()) {
+                youSearch.visibility = View.GONE
+                clearHistory.visibility = View.GONE
+            }
+
         }
 
         var searchTextWatcher = object : TextWatcher {
@@ -98,14 +103,14 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
-                youSearch.visibility = if (inputEditText.hasFocus() && s?.isEmpty() == true)
+                youSearch.visibility = if (searchHistory.showTrackHistory().isNotEmpty()) {
+                    View.VISIBLE
+                } else if (inputEditText.hasFocus() && s?.isEmpty() == true)
                     View.VISIBLE else View.GONE
-
             }
 
             override fun afterTextChanged(s: Editable?) {
             }
-
         }
 
         inputEditText.addTextChangedListener(searchTextWatcher)
@@ -117,11 +122,10 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
         clearHistory.setOnClickListener {
             inputEditText.setText("")
             it.hideKeyboard()
-            tracks.clear()
-            adapter.notifyDataSetChanged()
             clearHistory.visibility = View.GONE
             youSearch.visibility = View.GONE
-            searchHistory.clearHistory()
+            adapter.setTracks(searchHistory.clearHistory())
+
         }
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -134,20 +138,16 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
             false
         }
 
-
-
         inputEditText.setOnFocusChangeListener { _, hasFocus ->
             if (searchHistory.showTrackHistory().isNotEmpty()) {
                 youSearch.visibility = if (hasFocus && inputEditText.text.isEmpty())
                     View.VISIBLE else View.GONE
                 if (youSearch.visibility == View.VISIBLE) {
-                    tracks.clear()
-                    tracks.addAll(searchHistory.showTrackHistory())
-                    adapter.notifyDataSetChanged()
+                    adapter.setTracks(searchHistory.showTrackHistory())
                     recyclerView.visibility = View.VISIBLE
                     clearHistory.visibility = View.VISIBLE
                 } else {
-                    tracks.clear()
+                    adapter.setTracks(searchHistory.showTrackHistory())
                 }
             }
         }
@@ -163,22 +163,17 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
                         response: Response<TrackResponse>
                     ) {
                         if (response.code() == 200) {
-                            tracks.clear()
                             if (response.body()?.results?.isNotEmpty() == true) {
                                 progressBar.visibility = View.GONE
                                 recyclerView.visibility = View.VISIBLE
                                 recyclerLayout.visibility = View.VISIBLE
-                                tracks.addAll(response.body()?.results!!)
-                                adapter.notifyDataSetChanged()
+                                adapter.setTracks(response.body()?.results!!)
+                                youSearch.visibility = View.GONE
+                                clearHistory.visibility = View.GONE
                             }
-                            if (tracks.isEmpty()) {
-                                visibleContent(false)
-                            }
-
                         } else {
                             visibleContent(false)
                         }
-
                     }
 
                     override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
@@ -222,5 +217,4 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
     override fun onClick(track: Track) {
         searchHistory.addTrackHistory(track)
     }
-
 }

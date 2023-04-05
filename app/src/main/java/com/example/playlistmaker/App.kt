@@ -21,7 +21,6 @@ class App : Application() {
         )
     }
 
-
     override fun onCreate() {
         super.onCreate()
         initTheme()
@@ -29,40 +28,53 @@ class App : Application() {
     }
 
     fun initTheme(): Boolean {
-        if (!sharedPrefs.contains(KEY_THEME)) {
-            when (resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
-                Configuration.UI_MODE_NIGHT_YES -> {
-                    sharedPrefs.edit().putInt(KEY_THEME, DARK_THEME).apply()
-                    return true
-                }
-                Configuration.UI_MODE_NIGHT_NO -> {
-                    sharedPrefs.edit().putInt(KEY_THEME, LIGHT_THEME).apply()
-                    return false
-                }
-            }
+        return if (!sharedPrefs.contains(KEY_THEME)) {
+            defineTheme()
         } else {
-            when (sharedPrefs.getInt(KEY_THEME, -1)) {
-                0 -> {
-
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    return false
-                }
-                1 -> {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    return true
-                }
-            }
+            installSavedTheme()
         }
-        return false
     }
+
+    private fun defineTheme(): Boolean {
+        return when (resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                saveTheme(DARK_THEME)
+                true
+            }
+            Configuration.UI_MODE_NIGHT_NO -> {
+                saveTheme(LIGHT_THEME)
+                false
+            }
+            else -> false
+        }
+    }
+
+    private fun saveTheme(key: Int) {
+        sharedPrefs.edit().putInt(KEY_THEME, key).apply()
+    }
+
+    private fun installSavedTheme(): Boolean {
+        return when (sharedPrefs.getInt(KEY_THEME, -1)) {
+            LIGHT_THEME -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                false
+            }
+            DARK_THEME -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                true
+            }
+            else -> false
+        }
+    }
+
 
     fun switchTheme(darkThemeEnabled: Boolean) {
         AppCompatDelegate.setDefaultNightMode(
             if (darkThemeEnabled) {
-                sharedPrefs.edit().putInt(KEY_THEME, DARK_THEME).apply()
+                saveTheme(DARK_THEME)
                 AppCompatDelegate.MODE_NIGHT_YES
             } else {
-                sharedPrefs.edit().putInt(KEY_THEME, LIGHT_THEME).apply()
+                saveTheme(LIGHT_THEME)
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )

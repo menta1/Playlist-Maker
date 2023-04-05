@@ -31,9 +31,10 @@ class SearchHistory(private val sharedPreferences: SharedPreferences) {
         return tracksHistory
     }
 
-    fun clearHistory() {
+    fun clearHistory(): ArrayList<Track> {
         tracksHistory.clear()
         sharedPreferences.edit().remove(KEY_SEARCH_HISTORY).apply()
+        return tracksHistory
     }
 
 }

@@ -10,6 +10,6 @@
     <dimen name="text_size_16">16sp</dimen>
     <dimen name="text_size_11">11sp</dimen>
     <dimen name="text_size_19">19sp</dimen>
-
+    <dimen name="rounded_artworkUrl100">2dp</dimen>
 
 </resources>

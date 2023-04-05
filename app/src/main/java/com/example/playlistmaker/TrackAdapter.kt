@@ -12,8 +12,14 @@ import java.util.*
 
 class TrackAdapter(private val listener: Listener) :
     RecyclerView.Adapter<TrackAdapter.TrackHolder>() {
-    var tracks = ArrayList<Track>()
-
+    private val tracks = ArrayList<Track>()
+    fun setTracks(newTracks: List<Track>?) {
+        tracks.clear()
+        if (!newTracks.isNullOrEmpty()) {
+            tracks.addAll(newTracks)
+        }
+        notifyDataSetChanged()
+    }
 
     class TrackHolder(itemSong: View) : RecyclerView.ViewHolder(itemSong) {
 
@@ -33,9 +39,10 @@ class TrackAdapter(private val listener: Listener) :
                     .load(model.artworkUrl100)
                     .placeholder(R.drawable.placeholder)
                     .centerCrop()
-                    .transform(RoundedCorners(4))
+                    .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.rounded_artworkUrl100)))
                     .into(artworkUrl100)
             }
+
 
     }
 
@@ -43,7 +50,6 @@ class TrackAdapter(private val listener: Listener) :
         val view = LayoutInflater.from(parent.context).inflate(R.layout.song_item, parent, false)
         return TrackHolder(view)
     }
-
     override fun getItemCount(): Int = tracks.size
 
     override fun onBindViewHolder(holder: TrackHolder, position: Int) {
