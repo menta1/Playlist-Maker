@@ -32,20 +32,18 @@
         tools:ignore="RtlHardcoded,UnusedAttribute">
         </Button>
 
-    <Switch
-        android:id="@+id/switch1"
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/themeSwitcher"
+        android:text="@string/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="21dp"
         android:layout_marginStart="16dp"
-        android:text="@string/black"
+        android:layout_gravity="start"
         android:textSize="@dimen/text_size_16"
         android:letterSpacing="0"
         android:fontFamily="@font/ys_display_medium"
-        android:textFontWeight="400"
-        android:textColor="?attr/colorOnSecondary"
-        tools:ignore="UnusedAttribute,UseSwitchCompatOrMaterialXml"
-        />
+        android:textColor="?attr/colorOnSecondary"/>
 
     <Button
         android:id="@+id/shareApp"

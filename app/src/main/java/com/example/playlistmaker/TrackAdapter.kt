@@ -9,37 +9,54 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.databinding.SongItemBinding
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
-class TrackAdapter: RecyclerView.Adapter<TrackAdapter.TrackHolder>() {
-    var tracks = ArrayList<Track>()
-
-    class TrackHolder(itemSong: View): RecyclerView.ViewHolder(itemSong) {
-
-        private val binding = SongItemBinding.bind(itemSong)
-            fun bind(model: Track) =
-                with(binding) {
-                    trackName.text = model.trackName
-                    artistName.text = model.artistName
-                    trackTime.text = (SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)).toString()
-                    Glide.with(itemView)
-                        .load(model.artworkUrl100)
-                        .placeholder(R.drawable.placeholder)
-                        .centerCrop()
-                        .transform(RoundedCorners(4))
-                        .into(artworkUrl100)
-                }
-
+class TrackAdapter(private val listener: Listener) :
+    RecyclerView.Adapter<TrackAdapter.TrackHolder>() {
+    private val tracks = ArrayList<Track>()
+    fun setTracks(newTracks: List<Track>?) {
+        tracks.clear()
+        if (!newTracks.isNullOrEmpty()) {
+            tracks.addAll(newTracks)
         }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.song_item,parent,false)
-        return TrackHolder(view)
+        notifyDataSetChanged()
     }
 
+    class TrackHolder(itemSong: View) : RecyclerView.ViewHolder(itemSong) {
+
+        private val binding = SongItemBinding.bind(itemSong)
+        fun bind(model: Track, listener: Listener) =
+            with(binding) {
+                trackName.text = model.trackName
+                artistName.text = model.artistName
+                trackTime.text = (SimpleDateFormat(
+                    "mm:ss",
+                    Locale.getDefault()
+                ).format(model.trackTimeMillis)).toString()
+                itemView.setOnClickListener {
+                    listener.onClick(model)
+                }
+                Glide.with(itemView)
+                    .load(model.artworkUrl100)
+                    .placeholder(R.drawable.placeholder)
+                    .centerCrop()
+                    .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.rounded_artworkUrl100)))
+                    .into(artworkUrl100)
+            }
+
+
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.song_item, parent, false)
+        return TrackHolder(view)
+    }
     override fun getItemCount(): Int = tracks.size
 
     override fun onBindViewHolder(holder: TrackHolder, position: Int) {
-        holder.bind(tracks[position])
+        holder.bind(tracks[position], listener)
+    }
+
+    interface Listener {
+        fun onClick(track: Track)
     }
 }

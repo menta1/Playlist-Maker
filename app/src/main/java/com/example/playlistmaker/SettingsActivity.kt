@@ -2,11 +2,15 @@ package com.example.playlistmaker
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.switchmaterial.SwitchMaterial
+
 
 class SettingsActivity : AppCompatActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -15,9 +19,16 @@ class SettingsActivity : AppCompatActivity() {
         val shareAppButton = findViewById<Button>(R.id.shareApp)
         val writeSupportButton = findViewById<Button>(R.id.writeSupport)
         val termsUseButton = findViewById<Button>(R.id.termsUse)
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+
+        themeSwitcher.isChecked = (applicationContext as App).initTheme()
 
         backButton.setOnClickListener {
             finish()
+        }
+
+        themeSwitcher.setOnCheckedChangeListener { _, checked ->
+            (applicationContext as App).switchTheme(checked)
         }
 
         shareAppButton.setOnClickListener {
@@ -44,6 +55,7 @@ class SettingsActivity : AppCompatActivity() {
             )
             startActivity(termsUseButtonIntent)
         }
+
     }
 
 }
