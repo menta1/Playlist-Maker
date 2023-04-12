@@ -37,6 +37,10 @@ class SearchHistory(private val sharedPreferences: SharedPreferences) {
         return tracksHistory
     }
 
+    fun getLastTrack(): Track{
+        return tracksHistory[tracksHistory.size]
+    }
+
 }
 
 

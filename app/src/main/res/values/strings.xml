@@ -15,7 +15,7 @@
     <string name="terms_use_link">https://yandex.ru/legal/practicum_offer/</string>
     <string name="name_music_group">TextView</string>
     <string name="song_duration">TextView</string>
-    <string name="song_name">TextView</string>
+    <string name="song_name">trackName</string>
     <string name="image_album">Image album</string>
     <string name="nothing_was_found">Ничего не нашлось</string>
     <string name="communication_problems_1">Проблемы со связью</string>
