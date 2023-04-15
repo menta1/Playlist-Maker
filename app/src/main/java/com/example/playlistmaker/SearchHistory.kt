@@ -23,7 +23,7 @@ class SearchHistory(private val sharedPreferences: SharedPreferences) {
     }
 
     fun showTrackHistory(): ArrayList<Track> {
-        var r = sharedPreferences.getString(KEY_SEARCH_HISTORY, "")
+        val r = sharedPreferences.getString(KEY_SEARCH_HISTORY, "")
         if (sharedPreferences.contains(KEY_SEARCH_HISTORY)) {
             tracksHistory = Gson().fromJson(r, sType)
         }
@@ -37,9 +37,6 @@ class SearchHistory(private val sharedPreferences: SharedPreferences) {
         return tracksHistory
     }
 
-    fun getLastTrack(): Track{
-        return tracksHistory[tracksHistory.size]
-    }
 
 }
 
