@@ -11,5 +11,6 @@
     <dimen name="text_size_11">11sp</dimen>
     <dimen name="text_size_19">19sp</dimen>
     <dimen name="rounded_artworkUrl100">2dp</dimen>
+    <dimen name="rounded_artworkUrl100_high">8dp</dimen>
 
 </resources>

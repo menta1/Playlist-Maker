@@ -2,10 +2,12 @@ package com.example.playlistmaker
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -164,6 +166,7 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
                     ) {
                         if (response.code() == 200) {
                             if (response.body()?.results?.isNotEmpty() == true) {
+                                Log.d("tag", response.body()?.results.toString())
                                 progressBar.visibility = View.GONE
                                 recyclerView.visibility = View.VISIBLE
                                 recyclerLayout.visibility = View.VISIBLE
@@ -216,5 +219,8 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
 
     override fun onClick(track: Track) {
         searchHistory.addTrackHistory(track)
+        val audioplayer = Intent(this, AudioplayerActivity::class.java)
+        audioplayer.putExtra("TRACK", track)
+        startActivity(audioplayer)
     }
 }
