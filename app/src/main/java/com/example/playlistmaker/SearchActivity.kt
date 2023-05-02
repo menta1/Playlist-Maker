@@ -197,6 +197,8 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
                                 adapter.setTracks(response.body()?.results!!)
                                 youSearch.visibility = View.GONE
                                 clearHistory.visibility = View.GONE
+                            } else {
+                                visibleContent(false)
                             }
                         } else {
                             visibleContent(false)

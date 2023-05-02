@@ -24,6 +24,7 @@ class AudioplayerActivity : AppCompatActivity() {
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
+        private const val TIME_RESET = "00:00"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +35,7 @@ class AudioplayerActivity : AppCompatActivity() {
         binding.backButton.setOnClickListener {
             finish()
         }
-        binding.textTrackTime.text = "00:00"
+        binding.textTrackTime.text = TIME_RESET
         val track: Track? = intent.extras?.getParcelable("TRACK")
         url = track?.previewUrl.toString()
         preparePlayer()
@@ -146,7 +147,7 @@ class AudioplayerActivity : AppCompatActivity() {
                     handler.removeCallbacks(this)
                 }
                 if (playerState == STATE_PREPARED) {
-                    binding.textTrackTime.text = "00:00"
+                    binding.textTrackTime.text = TIME_RESET
                 }
 
 
