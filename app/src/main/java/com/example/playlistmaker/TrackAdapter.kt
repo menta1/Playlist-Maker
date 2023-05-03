@@ -28,6 +28,7 @@ class TrackAdapter(private val listener: Listener) :
             with(binding) {
                 trackName.text = model.trackName
                 artistName.text = model.artistName
+
                 trackTime.text = (SimpleDateFormat(
                     "mm:ss",
                     Locale.getDefault()
@@ -50,6 +51,7 @@ class TrackAdapter(private val listener: Listener) :
         val view = LayoutInflater.from(parent.context).inflate(R.layout.song_item, parent, false)
         return TrackHolder(view)
     }
+
     override fun getItemCount(): Int = tracks.size
 
     override fun onBindViewHolder(holder: TrackHolder, position: Int) {

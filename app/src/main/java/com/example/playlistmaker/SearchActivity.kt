@@ -5,9 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -36,6 +37,9 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
     private lateinit var sharedPrefs: SharedPreferences
     private lateinit var searchHistory: SearchHistory
     private val adapter = TrackAdapter(this)
+    private val handler = Handler(Looper.getMainLooper())
+    private val searchRunnable = Runnable { iTunesServiceSearch() }
+    private var isClickAllowed = true
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunesBaseUrl)
@@ -45,7 +49,9 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
 
     companion object {
         const val TEXT_EDITTEXT = "TEXT_EDITTEXT"
-        const val iTunesBaseUrl = "https://itunes.apple.com"
+        const val iTunesBaseUrl = "http://itunes.apple.com"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -78,6 +84,8 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
+
+
         backButton.setOnClickListener {
             finish()
         }
@@ -105,14 +113,25 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
-                youSearch.visibility = if (searchHistory.showTrackHistory().isNotEmpty()) {
-                    View.VISIBLE
-                } else if (inputEditText.hasFocus() && s?.isEmpty() == true)
-                    View.VISIBLE else View.GONE
+                if (searchHistory.showTrackHistory().isNotEmpty()) {
+                    adapter.setTracks(searchHistory.showTrackHistory())
+                    youSearch.visibility = View.VISIBLE
+                } else if (inputEditText.hasFocus() && s?.isEmpty() == true) {
+                    youSearch.visibility = View.GONE
+                    recyclerView.visibility = View.GONE
+                } else youSearch.visibility = View.GONE
+                if (s?.isNotEmpty() == true) {
+                    searchDebounce()
+                    youSearch.visibility = View.GONE
+                    recyclerLayout.visibility = View.GONE
+                    progressBar.visibility = View.VISIBLE
+                    communicationProblems.visibility = View.GONE
+                    nothingWasFound.visibility = View.GONE
+                }
+
             }
 
-            override fun afterTextChanged(s: Editable?) {
-            }
+            override fun afterTextChanged(s: Editable?) {}
         }
 
         inputEditText.addTextChangedListener(searchTextWatcher)
@@ -156,6 +175,12 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
 
     }
 
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+
+    }
+
     private fun iTunesServiceSearch() {
         if (inputEditText.text.isNotEmpty()) {
             iTunesService.search(inputEditText.text.toString())
@@ -166,13 +191,14 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
                     ) {
                         if (response.code() == 200) {
                             if (response.body()?.results?.isNotEmpty() == true) {
-                                Log.d("tag", response.body()?.results.toString())
                                 progressBar.visibility = View.GONE
                                 recyclerView.visibility = View.VISIBLE
                                 recyclerLayout.visibility = View.VISIBLE
                                 adapter.setTracks(response.body()?.results!!)
                                 youSearch.visibility = View.GONE
                                 clearHistory.visibility = View.GONE
+                            } else {
+                                visibleContent(false)
                             }
                         } else {
                             visibleContent(false)
@@ -218,9 +244,20 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
     }
 
     override fun onClick(track: Track) {
-        searchHistory.addTrackHistory(track)
-        val audioplayer = Intent(this, AudioplayerActivity::class.java)
-        audioplayer.putExtra("TRACK", track)
-        startActivity(audioplayer)
+        if (clickDebounce()) {
+            searchHistory.addTrackHistory(track)
+            val audioplayer = Intent(this, AudioplayerActivity::class.java)
+            audioplayer.putExtra("TRACK", track)
+            startActivity(audioplayer)
+        }
+    }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
     }
 }
