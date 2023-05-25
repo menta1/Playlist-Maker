@@ -4,8 +4,9 @@ import com.example.playlistmaker.data.AudioplayerRepositoryImpl
 import com.example.playlistmaker.domain.impl.AudioplayerInteractorImpl
 
 object Creator {
-    private val repositoryImpl = AudioplayerRepositoryImpl()
-    fun getRepository(): AudioplayerInteractorImpl {
+
+    fun getInteractor(): AudioplayerInteractorImpl {
+        val repositoryImpl = AudioplayerRepositoryImpl()
         return AudioplayerInteractorImpl(repositoryImpl)
     }
 }

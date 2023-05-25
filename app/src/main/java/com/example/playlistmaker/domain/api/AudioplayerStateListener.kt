@@ -1,6 +1,6 @@
 package com.example.playlistmaker.domain.api
 
-interface AudioplayerState {
+interface AudioplayerStateListener {
     fun onCompletionListener()
     fun onPreparedListener()
 }

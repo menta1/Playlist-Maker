@@ -1,8 +1,9 @@
 package com.example.playlistmaker.domain.impl
 
+import android.content.Context
 import com.example.playlistmaker.domain.api.AudioplayerInteractor
 import com.example.playlistmaker.domain.api.AudioplayerRepository
-import com.example.playlistmaker.domain.api.AudioplayerState
+import com.example.playlistmaker.domain.api.AudioplayerStateListener
 
 class AudioplayerInteractorImpl(private val repository: AudioplayerRepository) :
     AudioplayerInteractor{
@@ -18,8 +19,8 @@ class AudioplayerInteractorImpl(private val repository: AudioplayerRepository) :
         repository.stop()
     }
 
-    override fun preparePlayer(url: String, listner: AudioplayerState) {
-        repository.preparePlayer(url, listner)
+    override fun preparePlayer(url: String, listener: AudioplayerStateListener) {
+        repository.preparePlayer(url, listener)
     }
 
     override fun currentPosition(): Int {

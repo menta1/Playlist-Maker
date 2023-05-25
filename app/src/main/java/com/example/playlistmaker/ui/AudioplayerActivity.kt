@@ -1,5 +1,6 @@
 package com.example.playlistmaker.ui
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,11 +12,11 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.databinding.ActivityAudioplayerBinding
-import com.example.playlistmaker.domain.api.AudioplayerState
+import com.example.playlistmaker.domain.api.AudioplayerStateListener
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
-class AudioplayerActivity : AppCompatActivity(),AudioplayerState {
+class AudioplayerActivity : AppCompatActivity(),AudioplayerStateListener {
     companion object {
         private const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1
@@ -24,8 +25,8 @@ class AudioplayerActivity : AppCompatActivity(),AudioplayerState {
         private const val TIME_RESET = "00:00"
     }
     private lateinit var binding: ActivityAudioplayerBinding
-
-    private val repository = Creator.getRepository()
+    //private val mediaPlayer = MediaPlayer.cre
+    private val repository = Creator.getInteractor()
 
     private var playerState = STATE_DEFAULT
     private var url = ""
@@ -149,10 +150,7 @@ class AudioplayerActivity : AppCompatActivity(),AudioplayerState {
                 if (playerState == STATE_PREPARED) {
                     binding.textTrackTime.text = TIME_RESET
                 }
-
-
             }
-
         }
     }
 
