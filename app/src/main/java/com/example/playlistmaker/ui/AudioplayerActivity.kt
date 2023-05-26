@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -8,17 +8,15 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.model.Track
+import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.databinding.ActivityAudioplayerBinding
+import com.example.playlistmaker.domain.api.AudioplayerStateListener
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
-class AudioplayerActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityAudioplayerBinding
-    private var mediaPlayer = MediaPlayer()
-    private var playerState = STATE_DEFAULT
-    private var url = ""
-    private val handler = Handler(Looper.getMainLooper())
-
+class AudioplayerActivity : AppCompatActivity(),AudioplayerStateListener {
     companion object {
         private const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1
@@ -26,6 +24,14 @@ class AudioplayerActivity : AppCompatActivity() {
         private const val STATE_PAUSED = 3
         private const val TIME_RESET = "00:00"
     }
+    private lateinit var binding: ActivityAudioplayerBinding
+    //private val mediaPlayer = MediaPlayer.cre
+    private val repository = Creator.getInteractor()
+
+    private var playerState = STATE_DEFAULT
+    private var url = ""
+    private val handler = Handler(Looper.getMainLooper())
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +44,7 @@ class AudioplayerActivity : AppCompatActivity() {
         binding.textTrackTime.text = TIME_RESET
         val track: Track? = intent.extras?.getParcelable("TRACK")
         url = track?.previewUrl.toString()
-        preparePlayer()
+        repository.preparePlayer(url, this)
         with(binding) {
             textTrackNameVariable.text = track?.trackName
             textArtistNameVariable.text = track?.artistName
@@ -74,7 +80,7 @@ class AudioplayerActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         playerState = STATE_PAUSED
-        mediaPlayer.release()
+        repository.release()
     }
 
     private fun collectionNameIsEmpty(track: Track): String {
@@ -92,24 +98,19 @@ class AudioplayerActivity : AppCompatActivity() {
             track.collectionName.toString()
         }
     }
-
-    private fun preparePlayer() {
-        mediaPlayer.setDataSource(url)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            binding.buttonPlay.isEnabled = true
-            playerState = STATE_PREPARED
-        }
-        mediaPlayer.setOnCompletionListener {
-            playerState = STATE_PREPARED
-            binding.buttonPlay.visibility = View.VISIBLE
-            binding.buttonPause.visibility = View.GONE
-        }
+    override fun onCompletionListener() {
+        binding.buttonPlay.isEnabled = true
+        playerState = STATE_PREPARED
     }
-
+    override fun onPreparedListener() {
+        playerState = STATE_PREPARED
+        binding.buttonPlay.visibility = View.VISIBLE
+        binding.buttonPause.visibility = View.GONE
+    }
+   
     private fun startPlayer() {
         playerState = STATE_PLAYING
-        mediaPlayer.start()
+        repository.play()
         binding.buttonPlay.visibility = View.GONE
         binding.buttonPause.visibility = View.VISIBLE
         handler.post(timerSong())
@@ -118,7 +119,7 @@ class AudioplayerActivity : AppCompatActivity() {
 
     private fun pausePlayer() {
         playerState = STATE_PAUSED
-        mediaPlayer.pause()
+        repository.pause()
         binding.buttonPlay.visibility = View.VISIBLE
         binding.buttonPause.visibility = View.GONE
 
@@ -141,7 +142,7 @@ class AudioplayerActivity : AppCompatActivity() {
                 binding.textTrackTime.text = SimpleDateFormat(
                     "mm:ss",
                     Locale.getDefault()
-                ).format(mediaPlayer.currentPosition)
+                ).format(repository.currentPosition())
                 handler.postDelayed(this, 300)
                 if (playerState == STATE_PAUSED) {
                     handler.removeCallbacks(this)
@@ -149,11 +150,13 @@ class AudioplayerActivity : AppCompatActivity() {
                 if (playerState == STATE_PREPARED) {
                     binding.textTrackTime.text = TIME_RESET
                 }
-
-
             }
-
         }
     }
+
+
+
+
+
 }
 
