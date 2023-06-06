@@ -1,0 +1,81 @@
+package com.example.playlistmaker.settings.data
+
+import android.content.Context
+import android.content.SharedPreferences
+import android.content.res.Configuration
+import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmaker.settings.domain.AppThemeRepository
+
+class AppThemeRepositoryImpl(private val context: Context) : AppThemeRepository {
+    companion object {
+        const val SHARED_PREF = "shared_pref"
+        const val KEY_THEME = "prefs_theme"
+        const val LIGHT_THEME = 0
+        const val DARK_THEME = 1
+    }
+
+    private var sharedPrefs: SharedPreferences = context.getSharedPreferences(
+        SHARED_PREF,
+        Context.MODE_PRIVATE
+    )
+
+    init {
+        initTheme()
+    }
+
+    override fun switchTheme(darkThemeEnabled: Boolean) {
+        AppCompatDelegate.setDefaultNightMode(
+            if (darkThemeEnabled) {
+                saveTheme(DARK_THEME)
+                AppCompatDelegate.MODE_NIGHT_YES
+            } else {
+                saveTheme(LIGHT_THEME)
+                AppCompatDelegate.MODE_NIGHT_NO
+            }
+        )
+    }
+
+    override fun initTheme(): Boolean {
+        return if (!sharedPrefs.contains(KEY_THEME)) {
+            defineTheme()
+        } else {
+            installSavedTheme()
+        }
+    }
+
+    private fun defineTheme(): Boolean {
+        return when (context.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                saveTheme(DARK_THEME)
+                true
+            }
+
+            Configuration.UI_MODE_NIGHT_NO -> {
+                saveTheme(LIGHT_THEME)
+                false
+            }
+
+            else -> false
+        }
+    }
+
+    private fun saveTheme(key: Int) {
+        sharedPrefs.edit().putInt(KEY_THEME, key).apply()
+    }
+
+    private fun installSavedTheme(): Boolean {
+        return when (sharedPrefs.getInt(KEY_THEME, -1)) {
+            LIGHT_THEME -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                false
+            }
+
+            DARK_THEME -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                true
+            }
+
+            else -> false
+        }
+    }
+}
