@@ -27,7 +27,10 @@ class SettingsActivity : AppCompatActivity() {
             )[SettingsViewModel::class.java]
 
         viewModel.initTheme()
-        binding.themeSwitcher.isChecked = viewModel.isChecked.value!!
+
+        viewModel.isCheckedTrue.observe(this) {
+            binding.themeSwitcher.isChecked = it
+        }
 
         binding.themeSwitcher.setOnCheckedChangeListener { _, checked ->
             viewModel.switchTheme(checked)

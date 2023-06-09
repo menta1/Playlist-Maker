@@ -13,7 +13,7 @@ class SettingsViewModel(
 ) : ViewModel() {
 
     private val _isChecked = MutableLiveData<Boolean>()
-    val isChecked: LiveData<Boolean> = _isChecked
+    val isCheckedTrue: LiveData<Boolean> = _isChecked
 
     fun shareAppButton(link: String) {
         sharingInteractor.shareApp(link)

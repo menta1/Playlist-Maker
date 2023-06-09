@@ -8,29 +8,29 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.player.domain.PlayerInteractor
 import com.example.playlistmaker.player.domain.model.Track
-import com.example.playlistmaker.player.ui.activity.PlayerState
+import com.example.playlistmaker.player.ui.PlayerModelState
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerViewModel(playerInteractor: PlayerInteractor) : ViewModel() {
+class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewModel() {
     companion object {
         private const val TIME_RESET = "00:00"
     }
 
     private val mediaPlayer = MediaPlayer()
-    private val _textTrackNameVariable = MutableLiveData<Track>()
-    private val _playerState = MutableLiveData<PlayerState>()
-    val playerState: LiveData<PlayerState> = _playerState
+
+    private val _viewStateController = MutableLiveData<PlayerModelState>()
+    val viewStateControllerLiveData: LiveData<PlayerModelState> = _viewStateController
+
+    private val _trackLiveData = MutableLiveData<Track>()
+    val trackLiveData: LiveData<Track> = _trackLiveData
 
     init {
-        _playerState.value = PlayerState.STATE_DEFAULT
-        _textTrackNameVariable.value = playerInteractor.getTrack()
-        preparePlayer(_textTrackNameVariable.value?.previewUrl.toString())
         mediaPlayer.setOnPreparedListener {
-            _playerState.value = PlayerState.STATE_PREPARED
+            _viewStateController.value = PlayerModelState.Prepared
         }
         mediaPlayer.setOnCompletionListener {
-            _playerState.value = PlayerState.STATE_COMPLETION
+            _viewStateController.value = PlayerModelState.Completion
         }
     }
 
@@ -39,20 +39,24 @@ class PlayerViewModel(playerInteractor: PlayerInteractor) : ViewModel() {
     private val _textTrackTime = MutableLiveData<String>()
     val textTrackTime: LiveData<String> = _textTrackTime
 
-    val textTrackNameVariable: LiveData<Track> = _textTrackNameVariable
+    fun getTrack() {
+        _trackLiveData.value = playerInteractor.getTrack()
+        preparePlayer(_trackLiveData.value!!.previewUrl)
+    }
 
     fun startPlayer() {
-        _playerState.value = PlayerState.STATE_PLAYING
+        _viewStateController.value = PlayerModelState.Play
         mediaPlayer.start()
         handler.post(timerSong())
     }
 
     fun pausePlayer() {
-        _playerState.value = PlayerState.STATE_PAUSED
+        _viewStateController.value = PlayerModelState.Pause
         mediaPlayer.pause()
     }
 
     private fun preparePlayer(url: String) {
+        _viewStateController.value = PlayerModelState.Prepared
         mediaPlayer.reset()
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
@@ -70,10 +74,10 @@ class PlayerViewModel(playerInteractor: PlayerInteractor) : ViewModel() {
                     Locale.getDefault()
                 ).format(mediaPlayer.currentPosition)
                 handler.postDelayed(this, 300)
-                if (playerState.value == PlayerState.STATE_PAUSED) {
+                if (_viewStateController.value == PlayerModelState.Pause) {
                     handler.removeCallbacks(this)
                 }
-                if (playerState.value == PlayerState.STATE_PREPARED) {
+                if (_viewStateController.value == PlayerModelState.Prepared) {
                     _textTrackTime.value = TIME_RESET
                 }
             }
