@@ -6,8 +6,8 @@ import com.example.playlistmaker.util.ResultCallback
 interface SearchInteractor {
     fun getTracks(trackId: Int): Track?
     fun searchTracks(nameTrack: String, callback: ResultCallback)
-    fun showTrackHistory(): ArrayList<Track>
+    fun showTrackHistory(): List<Track>
     fun addTrackHistory(track: Track)
-    fun clearHistory(): ArrayList<Track>
+    fun clearHistory()
     fun startPlayerActivity()
 }

@@ -13,7 +13,7 @@ class SearchRepositoryImpl(
     private val context: Context
 ) : SearchRepository {
 
-    override fun showTrackHistory(): ArrayList<Track> {
+    override fun showTrackHistory(): List<Track> {
         return searchHistory.showTrackHistory()
     }
 
@@ -21,8 +21,8 @@ class SearchRepositoryImpl(
         searchHistory.addTrackHistory(track = track)
     }
 
-    override fun clearHistory(): ArrayList<Track> {
-        return searchHistory.clearHistory()
+    override fun clearHistory(){
+        searchHistory.clearHistory()
     }
 
     override fun startPlayerActivity() {

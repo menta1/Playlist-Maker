@@ -6,6 +6,6 @@ class PlayerInteractorImpl(private val repository: PlayerRepository) :
     PlayerInteractor {
 
     override fun getTrack(): Track {
-        return repository.getTrack()
+        return repository.getClickedTrack()
     }
 }

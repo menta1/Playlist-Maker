@@ -14,7 +14,7 @@ class SearchInteractorImpl(private val searchRepository: SearchRepository) : Sea
         return searchRepository.searchTracks(nameTrack = nameTrack, callback)
     }
 
-    override fun showTrackHistory(): ArrayList<Track> {
+    override fun showTrackHistory(): List<Track> {
         return searchRepository.showTrackHistory()
     }
 
@@ -22,8 +22,8 @@ class SearchInteractorImpl(private val searchRepository: SearchRepository) : Sea
         searchRepository.addTrackHistory(track)
     }
 
-    override fun clearHistory(): ArrayList<Track> {
-        return searchRepository.clearHistory()
+    override fun clearHistory() {
+        searchRepository.clearHistory()
     }
 
     override fun startPlayerActivity() {

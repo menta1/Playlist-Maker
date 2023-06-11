@@ -21,8 +21,8 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
     private val _viewStateController = MutableLiveData<SearchModelState>()
     val viewStateControllerLiveData: LiveData<SearchModelState> = _viewStateController
 
-    private val _trackHistoryLiveData = MutableLiveData<ArrayList<Track>>()
-    val trackHistoryLiveData: LiveData<ArrayList<Track>> = _trackHistoryLiveData
+    private val _trackHistoryLiveData = MutableLiveData<List<Track>>()
+    val trackHistoryLiveData: LiveData<List<Track>> = _trackHistoryLiveData
 
     private var isClickAllowed = true
 
@@ -71,7 +71,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
     }
 
     fun clearHistory() {
-        _trackHistoryLiveData.value = searchInteractor.clearHistory()
+        searchInteractor.clearHistory()
         _viewStateController.value = SearchModelState.HistoryEmpty
     }
 

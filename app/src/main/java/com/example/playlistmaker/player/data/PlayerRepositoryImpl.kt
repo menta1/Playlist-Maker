@@ -20,7 +20,7 @@ class PlayerRepositoryImpl(
     private val sType = object : TypeToken<ArrayList<Track>>() {}.type
     private var tracksHistory = ArrayList<Track>()
 
-    override fun getTrack(): Track {
+    override fun getClickedTrack(): Track {
         val r = sharedPrefs.getString(KEY_SEARCH_HISTORY, "")
         if (sharedPrefs.contains(KEY_SEARCH_HISTORY)) {
             tracksHistory = gson.fromJson(r, sType)
