@@ -8,17 +8,16 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.player.domain.model.Track
 import com.example.playlistmaker.search.ui.SearchModelState
 import com.example.playlistmaker.search.ui.view_model.SearchViewModel
-import com.example.playlistmaker.search.ui.view_model.SearchViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
 
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel by viewModel<SearchViewModel>()
 
     private lateinit var binding: ActivitySearchBinding
 
@@ -27,8 +26,6 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel =
-            ViewModelProvider(this, SearchViewModelFactory(this))[SearchViewModel::class.java]
 
         val adapter = TrackAdapter(this)
         binding.recyclerSongItem.adapter = adapter
