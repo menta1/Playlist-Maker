@@ -2,6 +2,7 @@ package com.example.playlistmaker.search.data.network
 
 import com.example.playlistmaker.search.data.NetworkClient
 import com.example.playlistmaker.search.data.dto.TrackResponse
+import com.example.playlistmaker.util.Constants.SUCCESS_REQUEST
 import com.example.playlistmaker.util.Resource
 import com.example.playlistmaker.util.ResultCallback
 import retrofit2.Call
@@ -18,7 +19,7 @@ class NetworkClientImpl(
                     call: Call<TrackResponse>,
                     response: Response<TrackResponse>
                 ) {
-                    if (response.code() == 200) {
+                    if (response.code() == SUCCESS_REQUEST) {
                         if (response.body()?.results?.isNotEmpty() == true) {
                             callback.onResultSuccess(Resource.Success((response.body()!!.results)))
 

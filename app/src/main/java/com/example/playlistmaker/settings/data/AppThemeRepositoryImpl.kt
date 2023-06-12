@@ -5,15 +5,16 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmaker.settings.domain.AppThemeRepository
+import com.example.playlistmaker.util.Constants.DARK_THEME
+import com.example.playlistmaker.util.Constants.KEY_THEME
+import com.example.playlistmaker.util.Constants.LIGHT_THEME
 
 class AppThemeRepositoryImpl(
     private val context: Context,
     private var sharedPrefs: SharedPreferences
 ) : AppThemeRepository {
     companion object {
-        const val KEY_THEME = "prefs_theme"
-        const val LIGHT_THEME = 0
-        const val DARK_THEME = 1
+
     }
 
     init {

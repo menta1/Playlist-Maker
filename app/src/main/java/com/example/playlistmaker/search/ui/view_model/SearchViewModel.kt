@@ -8,15 +8,13 @@ import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.player.domain.model.Track
 import com.example.playlistmaker.search.domain.SearchInteractor
 import com.example.playlistmaker.search.ui.SearchModelState
+import com.example.playlistmaker.util.Constants.CLICK_DEBOUNCE_DELAY
+import com.example.playlistmaker.util.Constants.SEARCH_DEBOUNCE_DELAY
 import com.example.playlistmaker.util.Resource
 import com.example.playlistmaker.util.ResultCallback
 
 class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewModel(),
     ResultCallback {
-    companion object {
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-    }
 
     private val _viewStateController = MutableLiveData<SearchModelState>()
     val viewStateControllerLiveData: LiveData<SearchModelState> = _viewStateController
@@ -31,7 +29,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
     private val searchRunnable =
         Runnable { searchTracks() }
 
-    var textSearch: String = ""
+    private var textSearch: String = ""
 
     fun onFocusInput() {
         _trackHistoryLiveData.value = searchInteractor.showTrackHistory()
@@ -39,6 +37,12 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
             _viewStateController.value = SearchModelState.HistoryEmpty
         } else {
             _viewStateController.value = SearchModelState.HistoryNotEmpty
+        }
+    }
+
+    fun updateTrackHistory() {
+        if (_trackHistoryLiveData.value?.equals(searchInteractor.showTrackHistory()) == false && textSearch.isEmpty()) {
+            _trackHistoryLiveData.value = searchInteractor.showTrackHistory()
         }
     }
 

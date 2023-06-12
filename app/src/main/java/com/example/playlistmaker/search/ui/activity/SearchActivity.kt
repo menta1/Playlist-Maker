@@ -26,10 +26,10 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         val adapter = TrackAdapter(this)
         binding.recyclerSongItem.adapter = adapter
         binding.recyclerSongItem.layoutManager = LinearLayoutManager(this)
+
         viewModel.trackHistoryLiveData.observe(this) {
             adapter.setTracks(it)
         }
@@ -90,6 +90,11 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
         binding.inputEditText.setOnFocusChangeListener { _, _ ->
             viewModel.onFocusInput()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateTrackHistory()
     }
 
     private fun stateLoading() {

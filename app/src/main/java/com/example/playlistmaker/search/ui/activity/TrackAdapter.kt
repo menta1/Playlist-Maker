@@ -1,6 +1,5 @@
 package com.example.playlistmaker.search.ui.activity
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,6 @@ class TrackAdapter(private val listener: Listener) :
         if (!newTracks.isNullOrEmpty()) {
             tracks.addAll(newTracks)
         }
-        Log.d("asd", newTracks.toString())
         notifyDataSetChanged()
     }
 
