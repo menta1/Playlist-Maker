@@ -9,13 +9,11 @@ import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.player.domain.PlayerInteractor
 import com.example.playlistmaker.player.domain.model.Track
 import com.example.playlistmaker.player.ui.PlayerModelState
+import com.example.playlistmaker.util.Constants.TIME_RESET
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewModel() {
-    companion object {
-        private const val TIME_RESET = "00:00"
-    }
 
     private val mediaPlayer = MediaPlayer()
 

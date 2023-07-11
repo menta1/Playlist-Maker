@@ -10,7 +10,7 @@ import com.example.playlistmaker.sharing.domain.model.EmailData
 class ExternalNavigatorImpl(private val context: Context) : ExternalNavigator {
 
     override fun shareLink(appLink: String) {
-        Intent(Intent.ACTION_SEND).apply {
+        Intent(Intent.ACTION_SEND).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK).apply {
             putExtra(Intent.EXTRA_TEXT, appLink)
             type = "plain/text"
             context.startActivity(this)
@@ -22,16 +22,17 @@ class ExternalNavigatorImpl(private val context: Context) : ExternalNavigator {
             Intent.ACTION_VIEW, Uri.parse(
                 termsLink
             )
-        )
+        ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(termsUseButtonIntent)
     }
 
     override fun openEmail(emailData: EmailData) {
-        Intent(Intent.ACTION_SENDTO).apply {
+        Intent(Intent.ACTION_SENDTO).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK).apply {
             data = Uri.parse("mailto:")
             putExtra(Intent.EXTRA_EMAIL, arrayOf(emailData.email))
             putExtra(Intent.EXTRA_TEXT, emailData.text)
             putExtra(Intent.EXTRA_SUBJECT, emailData.subject)
+            Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(this)
         }
     }
