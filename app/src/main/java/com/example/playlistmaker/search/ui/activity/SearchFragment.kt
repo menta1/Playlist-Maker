@@ -4,37 +4,48 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.domain.model.Track
 import com.example.playlistmaker.search.ui.SearchModelState
 import com.example.playlistmaker.search.ui.view_model.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
+
+class SearchFragment : Fragment(), TrackAdapter.Listener {
 
     private val viewModel by viewModel<SearchViewModel>()
+    private lateinit var binding: FragmentSearchBinding
 
-    private lateinit var binding: ActivitySearchBinding
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val adapter = TrackAdapter(this)
-        binding.recyclerSongItem.adapter = adapter
-        binding.recyclerSongItem.layoutManager = LinearLayoutManager(this)
 
-        viewModel.trackHistoryLiveData.observe(this) {
+        binding.recyclerSongItem.adapter = adapter
+        binding.recyclerSongItem.layoutManager = LinearLayoutManager(requireContext())
+        viewModel.onFocusInput()
+
+        viewModel.trackHistoryLiveData.observe(viewLifecycleOwner) {
             adapter.setTracks(it)
         }
 
-        viewModel.viewStateControllerLiveData.observe(this) { state ->
+        viewModel.viewStateControllerLiveData.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SearchModelState.Loading -> stateLoading()
                 is SearchModelState.HistoryEmpty -> stateHistoryEmpty()
@@ -45,10 +56,6 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
             }
         }
 
-
-        binding.backButton.setOnClickListener {
-            finish()
-        }
 
         binding.clearButton.setOnClickListener {
             viewModel.onFocusInput()
@@ -61,7 +68,9 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.onTextChangedInput(s)
+                if (!s.isNullOrEmpty()) {
+                    viewModel.onTextChangedInput(s)
+                }
                 if (binding.inputEditText.hasFocus() && s?.isEmpty() == true) {
                     viewModel.onFocusInput()
                 }
@@ -90,11 +99,6 @@ class SearchActivity : AppCompatActivity(), TrackAdapter.Listener {
         binding.inputEditText.setOnFocusChangeListener { _, _ ->
             viewModel.onFocusInput()
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.updateTrackHistory()
     }
 
     private fun stateLoading() {
