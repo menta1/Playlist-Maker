@@ -8,29 +8,22 @@
     android:orientation="vertical"
     android:paddingTop="@dimen/padding_top"
     android:paddingStart="4dp"
-    android:paddingEnd="@dimen/padding_end"
-    android:background="?attr/colorOnPrimary">
+    android:paddingEnd="@dimen/padding_end">
 
-    <Button
-        android:id="@+id/backButtonSettingsActivity"
-        android:layout_marginBottom="24dp"
-        android:text="@string/Settings"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/main_text_size"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/ys_display_medium"
         android:letterSpacing="0"
-        android:fontFamily="@font/ys_display_regular"
-        android:textFontWeight="500"
-        android:textColor="?attr/colorOnSecondary"
+        android:text="@string/settings"
         android:textAllCaps="false"
-        android:gravity="left"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        app:icon="@drawable/arrow_back"
-        app:iconGravity="textStart"
-        app:iconPadding="24dp"
-        app:iconTint="?attr/colorOnSecondary"
-        tools:ignore="RtlHardcoded,UnusedAttribute">
-        </Button>
+        android:textColor="?attr/colorOnSecondary"
+        android:textFontWeight="500"
+        android:textSize="@dimen/main_text_size_22"
+        android:layout_marginBottom="24dp"/>
+
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/themeSwitcher"
