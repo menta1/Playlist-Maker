@@ -3,15 +3,27 @@ package com.example.playlistmaker.search.domain.impl
 import com.example.playlistmaker.player.domain.model.Track
 import com.example.playlistmaker.search.domain.SearchInteractor
 import com.example.playlistmaker.search.domain.SearchRepository
-import com.example.playlistmaker.util.ResultCallback
+import com.example.playlistmaker.utils.Resource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class SearchInteractorImpl(private val searchRepository: SearchRepository) : SearchInteractor {
     override fun getTracks(trackId: Int): Track? {
         return searchRepository.getTracks(trackId)
     }
 
-    override fun searchTracks(nameTrack: String, callback: ResultCallback) {
-        return searchRepository.searchTracks(nameTrack = nameTrack, callback)
+    override fun searchTracks(expression: String): Flow<Pair<List<Track>?, String?>> {
+        return searchRepository.searchTracks(expression).map { result ->
+            when (result) {
+                is Resource.Success -> {
+                    Pair(result.data, null)
+                }
+
+                is Resource.Error -> {
+                    Pair(null, result.message)
+                }
+            }
+        }
     }
 
     override fun showTrackHistory(): List<Track> {

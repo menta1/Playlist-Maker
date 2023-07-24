@@ -1,7 +1,8 @@
 package com.example.playlistmaker.search.data
 
-import com.example.playlistmaker.util.ResultCallback
+import com.example.playlistmaker.search.data.dto.Response
+
 
 interface NetworkClient {
-    fun search(nameTrack: String, callback: ResultCallback)
+    suspend fun search(dto: Any): Response
 }

@@ -26,10 +26,15 @@ class SearchFragment : Fragment(), TrackAdapter.Listener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateView()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

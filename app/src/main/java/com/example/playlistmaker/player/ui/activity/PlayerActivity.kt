@@ -24,8 +24,6 @@ class PlayerActivity : AppCompatActivity() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.getTrack()
-
         viewModel.trackLiveData.observe(this) {
             with(binding) {
                 textTrackNameVariable.text = it.trackName
@@ -126,6 +124,5 @@ class PlayerActivity : AppCompatActivity() {
             track.collectionName
         }
     }
-
 }
 
