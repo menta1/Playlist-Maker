@@ -56,6 +56,9 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
         }
         mediaPlayer.setOnCompletionListener {
             _viewStateController.value = PlayerModelState.Completion
+            _viewStateController.value = PlayerModelState.Pause
+            timerJob?.cancel()
+            _textTrackTime.value = "00:00"
         }
     }
 
@@ -74,6 +77,5 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
 
     private fun getCurrentPlayerPosition(): String {
         return SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
-            ?: "00:00"
     }
 }
