@@ -5,9 +5,9 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmaker.settings.domain.AppThemeRepository
-import com.example.playlistmaker.util.Constants.DARK_THEME
-import com.example.playlistmaker.util.Constants.KEY_THEME
-import com.example.playlistmaker.util.Constants.LIGHT_THEME
+import com.example.playlistmaker.utils.Constants.DARK_THEME
+import com.example.playlistmaker.utils.Constants.KEY_THEME
+import com.example.playlistmaker.utils.Constants.LIGHT_THEME
 
 class AppThemeRepositoryImpl(
     private val context: Context,
