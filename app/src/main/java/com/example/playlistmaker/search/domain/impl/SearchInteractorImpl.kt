@@ -30,7 +30,7 @@ class SearchInteractorImpl(private val searchRepository: SearchRepository) : Sea
         return searchRepository.showTrackHistory()
     }
 
-    override fun addTrackHistory(track: Track) {
+    override suspend fun addTrackHistory(track: Track) {
         searchRepository.addTrackHistory(track)
     }
 
@@ -38,7 +38,7 @@ class SearchInteractorImpl(private val searchRepository: SearchRepository) : Sea
         searchRepository.clearHistory()
     }
 
-    override fun startPlayerActivity() {
-        searchRepository.startPlayerActivity()
+    override fun startPlayerActivity(track: Track) {
+        searchRepository.startPlayerActivity(track)
     }
 }

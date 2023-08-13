@@ -24,6 +24,15 @@ class PlayerActivity : AppCompatActivity() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val trackId = intent.getIntExtra("trackId", -1)
+        viewModel.preparePlayer(trackId)
+
+        viewModel.trackIsLike.observe(this) {
+            if (it) {
+                binding.buttonLike.setImageResource(R.drawable.button_heard_like)
+            } else binding.buttonLike.setImageResource(R.drawable.button_heard_notlike)
+        }
+
         viewModel.trackLiveData.observe(this) {
             with(binding) {
                 textTrackNameVariable.text = it.trackName
@@ -35,14 +44,14 @@ class PlayerActivity : AppCompatActivity() {
                 textCollectionNameVariable.text =
                     collectionNameIsEmpty(it)
                 textReleaseDateVariable.text =
-                    it.releaseDate.substring(0, 4)
+                    it.releaseDate?.substring(0, 4)
                 textPrimaryGenreNameVariable.text =
                     it.primaryGenreName
                 textCountryVariable.text = it.country
             }
             Glide.with(binding.root)
                 .load(
-                    it.artworkUrl100.replaceAfterLast(
+                    it.artworkUrl100?.replaceAfterLast(
                         '/',
                         "512x512bb.jpg"
                     )
@@ -66,12 +75,14 @@ class PlayerActivity : AppCompatActivity() {
         binding.backButton.setOnClickListener {
             finish()
         }
-
         binding.buttonPlay.setOnClickListener {
             viewModel.startPlayer()
         }
         binding.buttonPause.setOnClickListener {
             viewModel.pausePlayer()
+        }
+        binding.buttonLike.setOnClickListener {
+            viewModel.changeLiked()
         }
 
         viewModel.textTrackTime.observe(this) {
@@ -109,8 +120,8 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.mediaPlayerRelease()
     }
 
-    private fun collectionNameIsEmpty(track: Track): String {
-        return if (track.collectionName.isEmpty()) {
+    private fun collectionNameIsEmpty(track: Track): String? {
+        return if (track.collectionName?.isEmpty() == true) {
             with(binding) {
                 textCollectionName.visibility = View.GONE
                 textCollectionNameVariable.visibility = View.GONE

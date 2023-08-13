@@ -11,7 +11,9 @@
         tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_searchFragment_to_playerActivity"
-            app:destination="@id/playerActivity" />
+            app:destination="@id/playerActivity"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/mediatekaFragment"
@@ -20,7 +22,9 @@
         tools:layout="@layout/fragment_mediateka" >
         <action
             android:id="@+id/action_mediatekaFragment_to_playerActivity"
-            app:destination="@id/playerActivity" />
+            app:destination="@id/playerActivity"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"

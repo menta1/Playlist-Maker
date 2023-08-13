@@ -8,7 +8,7 @@ interface SearchRepository {
     fun getTracks(trackId: Int): Track?
     fun searchTracks(expression: String): Flow<Resource<List<Track>>>
     fun showTrackHistory(): List<Track>
-    fun addTrackHistory(track: Track)
+    suspend fun addTrackHistory(track: Track)
     fun clearHistory()
-    fun startPlayerActivity()
+    fun startPlayerActivity(track: Track)
 }

@@ -19,11 +19,10 @@ val viewModelModule = module {
     viewModel {
         SettingsViewModel(get(), get())
     }
-    viewModel{
-        FavoritesTracksViewModel()
-    }
-    viewModel{
+    viewModel {
         PlaylistViewModel()
     }
-
+    viewModel {
+        FavoritesTracksViewModel(get())
+    }
 }

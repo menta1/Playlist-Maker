@@ -15,7 +15,7 @@ class SearchHistoryImpl(private val sharedPreferences: SharedPreferences, privat
     private val sType = object : TypeToken<ArrayList<Track>>() {}.type
 
     override fun addTrackHistory(track: Track) {
-        tracksHistory.removeAll { it.trackId == track.trackId }
+        tracksHistory.removeAll { it.id == track.id }
         if (tracksHistory.size < MAX_SIZE_RECYCLER) {
             tracksHistory.add(0, track)
             sharedPreferences.edit().putString(KEY_SEARCH_HISTORY, gson.toJson(tracksHistory))
@@ -32,7 +32,7 @@ class SearchHistoryImpl(private val sharedPreferences: SharedPreferences, privat
         val tracks = showTrackHistory()
         val track: Track? = null
         for (itemTracks in tracks) {
-            if (itemTracks.trackId == trackId) {
+            if (itemTracks.id == trackId) {
                 return itemTracks
             }
         }

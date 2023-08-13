@@ -60,6 +60,13 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
         }
     }
 
+    fun refreshSearch() {
+        if (_viewStateController.value != SearchModelState.Loading) {
+            _viewStateController.value = SearchModelState.Loading
+            searchDebounce(true)
+        }
+    }
+
     private fun clickDebounce(): Boolean {
         val clickDebounce = debounce<Boolean>(CLICK_DEBOUNCE_DELAY, viewModelScope, true) {
             isClickAllowed = true
@@ -79,9 +86,9 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
 
     fun onClick(track: Track) {
         if (clickDebounce()) {
-            searchInteractor.addTrackHistory(track)
-            searchInteractor.getTracks(track.trackId)
-            searchInteractor.startPlayerActivity()
+            viewModelScope.launch { searchInteractor.addTrackHistory(track) }
+            searchInteractor.getTracks(track.id)
+            searchInteractor.startPlayerActivity(track)
         }
     }
 
