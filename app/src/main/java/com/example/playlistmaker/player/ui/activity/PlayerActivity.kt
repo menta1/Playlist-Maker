@@ -25,7 +25,10 @@ class PlayerActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val trackId = intent.getIntExtra("trackId", -1)
-        viewModel.preparePlayer(trackId)
+
+        if (savedInstanceState == null){
+            viewModel.preparePlayer(trackId)
+        }
 
         viewModel.trackIsLike.observe(this) {
             if (it) {
@@ -108,17 +111,22 @@ class PlayerActivity : AppCompatActivity() {
     private fun stateCompletion() {
         binding.buttonPlay.isEnabled = true
     }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.pausePlayer()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.pausePlayer()
-        viewModel.mediaPlayerRelease()
-    }
+//
+//    override fun onPause() {
+//        super.onPause()
+//        //viewModel.pausePlayer()
+//    }
+//
+//    override fun onResume() {
+//
+//        super.onResume()
+//    }
+//
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        //viewModel.pausePlayer()
+//        //viewModel.mediaPlayerRelease()
+//    }
 
     private fun collectionNameIsEmpty(track: Track): String? {
         return if (track.collectionName?.isEmpty() == true) {

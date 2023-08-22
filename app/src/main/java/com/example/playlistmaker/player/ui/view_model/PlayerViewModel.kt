@@ -31,6 +31,11 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
     private val _textTrackTime = MutableLiveData<String>()
     val textTrackTime: LiveData<String> = _textTrackTime
 
+    override fun onCleared() {
+        mediaPlayerRelease()
+        super.onCleared()
+    }
+
     fun startPlayer() {
         _viewStateController.value = PlayerModelState.Play
         mediaPlayer.start()
@@ -71,7 +76,7 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
         }
     }
 
-    fun mediaPlayerRelease() {
+    private fun mediaPlayerRelease() {
         mediaPlayer.release()
     }
 
@@ -105,4 +110,12 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
             }
         }
     }
+//
+//    fun saveState(){
+//
+//    }
+//
+//    fun restoreState(){
+//
+//    }
 }
