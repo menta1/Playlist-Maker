@@ -44,14 +44,17 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
 
     fun pausePlayer() {
         _viewStateController.value = PlayerModelState.Pause
+        mediaPlayer.pause()
+        timerJob?.cancel()
+        _textTrackTime.value = getCurrentPlayerPosition()
+    }
+
+    fun checkLike() {
         if (_trackIsLike.value == false) {
             viewModelScope.launch {
                 _trackLiveData.value?.let { playerInteractor.deleteTrack(it) }
             }
         }
-        mediaPlayer.pause()
-        timerJob?.cancel()
-        _textTrackTime.value = getCurrentPlayerPosition()
     }
 
     fun preparePlayer(trackId: Int) {
@@ -110,12 +113,4 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
             }
         }
     }
-//
-//    fun saveState(){
-//
-//    }
-//
-//    fun restoreState(){
-//
-//    }
 }
