@@ -79,7 +79,7 @@ class PlayerActivity : AppCompatActivity() {
             finish()
         }
         binding.buttonPlay.setOnClickListener {
-            viewModel.startPlayer()
+            viewModel.playPlayer()
         }
         binding.buttonPause.setOnClickListener {
             viewModel.pausePlayer()
@@ -115,6 +115,16 @@ class PlayerActivity : AppCompatActivity() {
     override fun onStop() {
         viewModel.checkLike()
         super.onStop()
+    }
+
+    override fun onPause() {
+        viewModel.saveState()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        viewModel.restoreState()
+        super.onResume()
     }
 
     private fun collectionNameIsEmpty(track: Track): String? {

@@ -18,6 +18,8 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
 
     private val mediaPlayer = MediaPlayer()
     private var timerJob: Job? = null
+    private var isPlayingMediaPlayer: Boolean = false
+
 
     private val _viewStateController = MutableLiveData<PlayerModelState>()
     val viewStateControllerLiveData: LiveData<PlayerModelState> = _viewStateController
@@ -36,7 +38,7 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
         super.onCleared()
     }
 
-    fun startPlayer() {
+    fun playPlayer() {
         _viewStateController.value = PlayerModelState.Play
         mediaPlayer.start()
         timerSong()
@@ -54,6 +56,20 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
             viewModelScope.launch {
                 _trackLiveData.value?.let { playerInteractor.deleteTrack(it) }
             }
+        }
+    }
+
+    fun saveState(){
+        if (viewStateControllerLiveData.value == PlayerModelState.Play){
+            isPlayingMediaPlayer = true
+            pausePlayer()
+        }
+    }
+
+    fun restoreState(){
+        if (isPlayingMediaPlayer){
+            isPlayingMediaPlayer = false
+            playPlayer()
         }
     }
 
