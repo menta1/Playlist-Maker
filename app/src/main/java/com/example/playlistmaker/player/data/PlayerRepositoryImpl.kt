@@ -1,28 +1,28 @@
 package com.example.playlistmaker.player.data
 
 import android.content.Context
-import android.content.SharedPreferences
+import com.example.playlistmaker.db.AppDatabase
 import com.example.playlistmaker.player.domain.PlayerRepository
 import com.example.playlistmaker.player.domain.model.Track
-import com.example.playlistmaker.utils.Constants.KEY_SEARCH_HISTORY
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.example.playlistmaker.utils.TrackDbConvertor
 
 class PlayerRepositoryImpl(
     val context: Context,
-    private val sharedPrefs: SharedPreferences,
-    private val gson: Gson
+    private val trackDbConvertor: TrackDbConvertor,
+    private val appDatabase: AppDatabase
 ) : PlayerRepository {
 
-    private val sType = object : TypeToken<ArrayList<Track>>() {}.type
-    private var tracksHistory = ArrayList<Track>()
+    override suspend fun getClickedTrack(trackId: Int): Track? {
+        return appDatabase.trackDao().getTrackById(trackId.toString())
+            ?.let { trackDbConvertor.map(it) }
+    }
 
-    override fun getClickedTrack(): Track? {
-        val r = sharedPrefs.getString(KEY_SEARCH_HISTORY, "")
-        if (sharedPrefs.contains(KEY_SEARCH_HISTORY)) {
-            tracksHistory = gson.fromJson(r, sType)
-        }
-        return tracksHistory.firstOrNull()
+    override suspend fun insertTrack(track: Track) {
+        appDatabase.trackDao().insertTrack(trackDbConvertor.map(track))
+    }
+
+    override suspend fun deleteTrack(track: Track) {
+        appDatabase.trackDao().deleteTrack(trackDbConvertor.map(track))
     }
 }
 

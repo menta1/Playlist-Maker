@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.playlistmaker.adapter.TrackAdapter
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.domain.model.Track
 import com.example.playlistmaker.search.ui.SearchModelState
@@ -85,7 +86,7 @@ class SearchFragment : Fragment(), TrackAdapter.Listener {
         })
 
         binding.refreshButton.setOnClickListener {
-            viewModel.searchTracks()
+            viewModel.refreshSearch()
         }
 
         binding.clearHistory.setOnClickListener {

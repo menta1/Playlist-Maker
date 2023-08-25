@@ -20,7 +20,7 @@ class MediatekaFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentMediatekaBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -38,7 +38,6 @@ class MediatekaFragment : Fragment() {
                 }
             }
         tabLayoutMediator.attach()
-
     }
 
     override fun onDestroyView() {

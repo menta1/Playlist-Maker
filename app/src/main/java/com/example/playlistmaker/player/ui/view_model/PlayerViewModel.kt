@@ -18,6 +18,8 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
 
     private val mediaPlayer = MediaPlayer()
     private var timerJob: Job? = null
+    private var isPlayingMediaPlayer: Boolean = false
+
 
     private val _viewStateController = MutableLiveData<PlayerModelState>()
     val viewStateControllerLiveData: LiveData<PlayerModelState> = _viewStateController
@@ -25,14 +27,18 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
     private val _trackLiveData = MutableLiveData<Track>()
     val trackLiveData: LiveData<Track> = _trackLiveData
 
-    init {
-        preparePlayer()
-    }
+    private val _trackIsLike = MutableLiveData<Boolean>().apply { value = false }
+    val trackIsLike: LiveData<Boolean> = _trackIsLike
 
     private val _textTrackTime = MutableLiveData<String>()
     val textTrackTime: LiveData<String> = _textTrackTime
 
-    fun startPlayer() {
+    override fun onCleared() {
+        mediaPlayerRelease()
+        super.onCleared()
+    }
+
+    fun playPlayer() {
         _viewStateController.value = PlayerModelState.Play
         mediaPlayer.start()
         timerSong()
@@ -45,24 +51,51 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
         _textTrackTime.value = getCurrentPlayerPosition()
     }
 
-    private fun preparePlayer() {
-        _viewStateController.value = PlayerModelState.Prepared
-        mediaPlayer.reset()
-        _trackLiveData.value = playerInteractor.getTrack()
-        mediaPlayer.setDataSource(_trackLiveData.value?.previewUrl)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            _viewStateController.value = PlayerModelState.Prepared
-        }
-        mediaPlayer.setOnCompletionListener {
-            _viewStateController.value = PlayerModelState.Completion
-            _viewStateController.value = PlayerModelState.Pause
-            timerJob?.cancel()
-            _textTrackTime.value = "00:00"
+    fun checkLike() {
+        if (_trackIsLike.value == false) {
+            viewModelScope.launch {
+                _trackLiveData.value?.let { playerInteractor.deleteTrack(it) }
+            }
         }
     }
 
-    fun mediaPlayerRelease() {
+    fun saveState(){
+        if (viewStateControllerLiveData.value == PlayerModelState.Play){
+            isPlayingMediaPlayer = true
+            pausePlayer()
+        }
+    }
+
+    fun restoreState(){
+        if (isPlayingMediaPlayer){
+            isPlayingMediaPlayer = false
+            playPlayer()
+        }
+    }
+
+    fun preparePlayer(trackId: Int) {
+        _viewStateController.value = PlayerModelState.Prepared
+        mediaPlayer.reset()
+        viewModelScope.launch {
+            _trackLiveData.value = playerInteractor.getTrack(trackId)
+            if (_trackLiveData.value?.isFavorite == true) {
+                _trackIsLike.value = true
+            }
+            mediaPlayer.setDataSource(_trackLiveData.value?.previewUrl)
+            mediaPlayer.prepareAsync()
+            mediaPlayer.setOnPreparedListener {
+                _viewStateController.value = PlayerModelState.Prepared
+            }
+            mediaPlayer.setOnCompletionListener {
+                _viewStateController.value = PlayerModelState.Completion
+                _viewStateController.value = PlayerModelState.Pause
+                timerJob?.cancel()
+                _textTrackTime.value = "00:00"
+            }
+        }
+    }
+
+    private fun mediaPlayerRelease() {
         mediaPlayer.release()
     }
 
@@ -77,5 +110,23 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
 
     private fun getCurrentPlayerPosition(): String {
         return SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
+    }
+
+    fun changeLiked() {
+        if (_trackIsLike.value == true) {
+            _trackIsLike.value = false
+            _trackLiveData.value?.isFavorite = false
+            viewModelScope.launch {
+                _trackLiveData.value?.let { playerInteractor.deleteTrack(it) }
+            }
+        } else {
+            _trackIsLike.value = true
+            _trackLiveData.value?.isFavorite = true
+            _trackLiveData.value?.let {
+                viewModelScope.launch {
+                    playerInteractor.insertTrack(it)
+                }
+            }
+        }
     }
 }
