@@ -1,4 +1,4 @@
-package com.example.playlistmaker.mediateka.ui.activity
+package com.example.playlistmaker.mediateka.favorite.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,8 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.adapter.TrackAdapter
 import com.example.playlistmaker.databinding.FragmentFavotitesTracksBinding
-import com.example.playlistmaker.mediateka.ui.MediatekaModelState
-import com.example.playlistmaker.mediateka.ui.view_model.FavoritesTracksViewModel
 import com.example.playlistmaker.player.domain.model.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -44,8 +42,8 @@ class FavoritesTracksFragment : Fragment(), TrackAdapter.Listener {
 
         viewModel.viewStateControllerLiveData.observe(viewLifecycleOwner) {
             when (it) {
-                is MediatekaModelState.EmptyFavoriteTracks -> emptyFavoriteTracks()
-                is MediatekaModelState.HasFavoriteTracks -> hasFavoriteTracks()
+                is FavoritesTracksUiState.EmptyFavoriteTracks -> emptyFavoriteTracks()
+                is FavoritesTracksUiState.HasFavoriteTracks -> hasFavoriteTracks()
             }
         }
 

@@ -17,21 +17,35 @@
     </fragment>
     <fragment
         android:id="@+id/mediatekaFragment"
-        android:name="com.example.playlistmaker.mediateka.ui.activity.MediatekaFragment"
+        android:name="com.example.playlistmaker.mediateka.MediatekaFragment"
         android:label="fragment_mediateka"
-        tools:layout="@layout/fragment_mediateka" >
+        tools:layout="@layout/fragment_mediateka">
         <action
             android:id="@+id/action_mediatekaFragment_to_playerActivity"
             app:destination="@id/playerActivity"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_mediatekaFragment_to_createPlaylistFragment"
+            app:destination="@id/createPlaylistFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.playlistmaker.settings.ui.activity.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings" />
     <activity
         android:id="@+id/playerActivity"
         android:name="com.example.playlistmaker.player.ui.activity.PlayerActivity"
-        android:label="PlayerActivity" />
+        android:label="PlayerActivity"
+        tools:layout="@layout/activity_player" />
+    <fragment
+        android:id="@+id/createPlaylistFragment"
+        android:name="com.example.playlistmaker.createPlaylist.ui.fragment.CreatePlaylistFragment"
+        android:label="CreatePlaylistFragment"
+        tools:layout="@layout/fragment_create_playlist">
+        <action
+            android:id="@+id/action_createPlaylistFragment_to_mediatekaFragment"
+            app:destination="@id/mediatekaFragment" />
+    </fragment>
 </navigation>

@@ -1,25 +1,23 @@
-package com.example.playlistmaker.mediateka.ui.activity
+package com.example.playlistmaker.mediateka
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentMediatekaBinding
+import com.example.playlistmaker.utils.Constants
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MediatekaFragment : Fragment() {
     private lateinit var binding: FragmentMediatekaBinding
     private lateinit var tabLayoutMediator: TabLayoutMediator
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private var toastWasNotShow = true
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentMediatekaBinding.inflate(inflater, container, false)
         return binding.root
@@ -27,6 +25,9 @@ class MediatekaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val textArgument: String? = arguments?.getString(Constants.TEXT_FOR_TOAST)
+        showToast(textArgument)
 
         binding.viewPager.adapter = MediatekaPagerAdapter(childFragmentManager, lifecycle)
 
@@ -43,5 +44,14 @@ class MediatekaFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         tabLayoutMediator.detach()
+    }
+
+    private fun showToast(text: String?) {
+        if (toastWasNotShow) {
+            if (!text.isNullOrEmpty()) {
+                Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+                toastWasNotShow = false
+            }
+        }
     }
 }

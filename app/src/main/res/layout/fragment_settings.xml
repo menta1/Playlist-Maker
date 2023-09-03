@@ -2,7 +2,6 @@
 
 <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -22,7 +21,7 @@
         android:textColor="?attr/colorOnSecondary"
         android:textFontWeight="500"
         android:textSize="@dimen/main_text_size_22"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="24dp" />
 
 
     <com.google.android.material.switchmaterial.SwitchMaterial
@@ -36,7 +35,7 @@
         android:textSize="@dimen/text_size_16"
         android:letterSpacing="0"
         android:fontFamily="@font/ys_display_medium"
-        android:textColor="?attr/colorOnSecondary"/>
+        android:textColor="?attr/colorOnSecondary" />
 
     <Button
         android:id="@+id/shareApp"
@@ -44,7 +43,7 @@
         android:layout_height="wrap_content"
         android:text="@string/share"
         app:icon="@drawable/share"
-        style="@style/buttonSettingsMenu"/>
+        style="@style/buttonSettingsMenu" />
 
     <Button
         android:id="@+id/writeSupport"
@@ -52,7 +51,7 @@
         android:layout_height="wrap_content"
         android:text="@string/help"
         app:icon="@drawable/support"
-        style="@style/buttonSettingsMenu"/>
+        style="@style/buttonSettingsMenu" />
 
     <Button
         android:id="@+id/termsUse"
@@ -60,7 +59,7 @@
         android:layout_height="wrap_content"
         android:text="@string/terms"
         app:icon="@drawable/arrow_forward"
-        style="@style/buttonSettingsMenu"/>
+        style="@style/buttonSettingsMenu" />
 
 
 </LinearLayout>

@@ -1,6 +1,8 @@
 package com.example.playlistmaker.player.domain
 
+import com.example.playlistmaker.createPlaylist.domain.model.Playlist
 import com.example.playlistmaker.player.domain.model.Track
+import kotlinx.coroutines.flow.Flow
 
 class PlayerInteractorImpl(private val repository: PlayerRepository) :
     PlayerInteractor {
@@ -15,5 +17,13 @@ class PlayerInteractorImpl(private val repository: PlayerRepository) :
 
     override suspend fun deleteTrack(track: Track) {
         repository.deleteTrack(track)
+    }
+
+    override suspend fun getAllPlaylists(): Flow<List<Playlist>> {
+        return repository.getAllPlaylists()
+    }
+
+    override suspend fun addTrackToPlaylist(trackId: Int, id: Int): Boolean {
+        return repository.addTrackToPlaylist(trackId, id)
     }
 }

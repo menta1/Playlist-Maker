@@ -1,10 +1,10 @@
-package com.example.playlistmaker.mediateka.data
+package com.example.playlistmaker.mediateka.favorite.data
 
 import android.content.Context
 import android.content.Intent
 import com.example.playlistmaker.db.AppDatabase
 import com.example.playlistmaker.db.entity.TrackEntity
-import com.example.playlistmaker.mediateka.domain.FavoriteRepository
+import com.example.playlistmaker.mediateka.favorite.domain.FavoriteRepository
 import com.example.playlistmaker.player.domain.model.Track
 import com.example.playlistmaker.player.ui.activity.PlayerActivity
 import com.example.playlistmaker.utils.TrackDbConvertor

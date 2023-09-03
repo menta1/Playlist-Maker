@@ -1,11 +1,10 @@
-package com.example.playlistmaker.mediateka.ui.view_model
+package com.example.playlistmaker.mediateka.favorite.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.mediateka.domain.FavoriteInteractor
-import com.example.playlistmaker.mediateka.ui.MediatekaModelState
+import com.example.playlistmaker.mediateka.favorite.domain.FavoriteInteractor
 import com.example.playlistmaker.player.domain.model.Track
 import kotlinx.coroutines.launch
 
@@ -14,8 +13,8 @@ class FavoritesTracksViewModel(private val favoriteInteractor: FavoriteInteracto
     private val _favoriteTrackLiveData = MutableLiveData<List<Track>>()
     val favoriteTrackLiveData: LiveData<List<Track>> = _favoriteTrackLiveData
 
-    private val _viewStateController = MutableLiveData<MediatekaModelState>()
-    val viewStateControllerLiveData: LiveData<MediatekaModelState> = _viewStateController
+    private val _viewStateController = MutableLiveData<FavoritesTracksUiState>()
+    val viewStateControllerLiveData: LiveData<FavoritesTracksUiState> = _viewStateController
 
     init {
         getAllTracksFavorite()
@@ -25,9 +24,9 @@ class FavoritesTracksViewModel(private val favoriteInteractor: FavoriteInteracto
         viewModelScope.launch {
             favoriteInteractor.getAllTracks().collect {
                 if (it.isEmpty()) {
-                    _viewStateController.postValue(MediatekaModelState.EmptyFavoriteTracks)
+                    _viewStateController.postValue(FavoritesTracksUiState.EmptyFavoriteTracks)
                 } else {
-                    _viewStateController.postValue(MediatekaModelState.HasFavoriteTracks)
+                    _viewStateController.postValue(FavoritesTracksUiState.HasFavoriteTracks)
                     _favoriteTrackLiveData.postValue(it)
                 }
             }
