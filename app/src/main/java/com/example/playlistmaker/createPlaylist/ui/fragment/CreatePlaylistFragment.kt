@@ -19,10 +19,12 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.createPlaylist.ui.viewmodel.CreatePlaylistViewModel
 import com.example.playlistmaker.databinding.FragmentCreatePlaylistBinding
 import com.example.playlistmaker.utils.Constants.NAVIGATE_FROM_PLAYLIST
+import com.example.playlistmaker.utils.Constants.RESULT_NAV_CREATE_PLAYLIST
 import com.example.playlistmaker.utils.Constants.TEXT_FOR_TOAST
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class CreatePlaylistFragment : Fragment() {
 
@@ -90,7 +92,8 @@ class CreatePlaylistFragment : Fragment() {
                 isPlaceholder
             )
             val bundle =
-                bundleOf(TEXT_FOR_TOAST to ("Плейлист " + binding.textInputEditTitle.text.toString() + " создан"))
+                bundleOf(TEXT_FOR_TOAST to ("Плейлист " + binding.textInputEditTitle.text.toString() + " создан"),
+                    RESULT_NAV_CREATE_PLAYLIST to true)
 
             if (requireActivity().supportFragmentManager.backStackEntryCount > 0) {
                 Toast.makeText(
@@ -145,7 +148,9 @@ class CreatePlaylistFragment : Fragment() {
             requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
                 View.VISIBLE
             try {
-                findNavController().navigate(R.id.action_createPlaylistFragment_to_mediatekaFragment)
+                val bundle =
+                    bundleOf(RESULT_NAV_CREATE_PLAYLIST to true)
+                findNavController().navigate(R.id.action_createPlaylistFragment_to_mediatekaFragment, bundle)
             } catch (e: Exception) {
                 e.stackTrace
             }

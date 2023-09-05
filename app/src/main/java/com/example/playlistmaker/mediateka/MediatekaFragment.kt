@@ -1,6 +1,7 @@
 package com.example.playlistmaker.mediateka
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,8 @@ class MediatekaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val textArgument: String? = arguments?.getString(Constants.TEXT_FOR_TOAST)
+        var returnFromCreatePlaylist: Boolean? = arguments?.getBoolean(Constants.RESULT_NAV_CREATE_PLAYLIST)
+
         showToast(textArgument)
 
         binding.viewPager.adapter = MediatekaPagerAdapter(childFragmentManager, lifecycle)
@@ -39,6 +42,12 @@ class MediatekaFragment : Fragment() {
                 }
             }
         tabLayoutMediator.attach()
+        Log.d("tag", "returnFromCreatePlaylist " + returnFromCreatePlaylist)
+        if (returnFromCreatePlaylist != null){
+            Log.d("tag", "returnFromCreatePlaylist inner " + returnFromCreatePlaylist)
+            binding.viewPager.setCurrentItem(1,false)
+            returnFromCreatePlaylist = null
+        }
     }
 
     override fun onDestroyView() {

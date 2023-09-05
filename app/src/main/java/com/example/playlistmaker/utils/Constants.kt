@@ -11,4 +11,5 @@ object Constants {
     const val MY_ALBUM = "myalbum"
     const val TEXT_FOR_TOAST = "text"
     const val NAVIGATE_FROM_PLAYLIST = "playlist"
+    const val RESULT_NAV_CREATE_PLAYLIST = "isReturnCreatePlaylist"
 }
