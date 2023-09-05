@@ -65,7 +65,7 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
 
     fun onClick(trackId: Int, id: Int) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 _resultAdding.postValue(playerInteractor.addTrackToPlaylist(trackId, id))
                 playerInteractor.getAllPlaylists().collect {
                     _playlist.value = it

@@ -14,6 +14,7 @@ interface PlaylistDao {
 
     @Upsert
     suspend fun insertPlaylist(playlist: PlaylistEntity): Long
+
     @Upsert
     suspend fun upsertPlaylistSongCrossRef(playlistSongCrossRef: PlaylistSongCrossRef): Long
 

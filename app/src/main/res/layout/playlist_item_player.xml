@@ -5,20 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/imageView"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/addPhotoImage"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:maxHeight="45dp"
-        android:maxWidth="45dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/rounded_8dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/placeholder" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/placeholder" />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/textViewTitle"
@@ -30,8 +38,8 @@
         android:textColor="?attr/colorOnSecondary"
         android:textSize="@dimen/text_size_16"
         app:layout_constraintBottom_toTopOf="@+id/textViewCountTracks"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/addPhotoImage"
+        app:layout_constraintTop_toTopOf="@+id/addPhotoImage"
         tools:text="Best songs 2021" />
 
     <TextView
@@ -42,7 +50,7 @@
         android:text="TextView"
         android:textColor="?attr/colorSecondaryVariant"
         android:textSize="@dimen/text_size_11"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintBottom_toBottomOf="@+id/addPhotoImage"
         app:layout_constraintStart_toStartOf="@+id/textViewTitle"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
         tools:text="98 треков" />

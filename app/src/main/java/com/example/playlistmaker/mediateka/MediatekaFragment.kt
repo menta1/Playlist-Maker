@@ -28,7 +28,8 @@ class MediatekaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val textArgument: String? = arguments?.getString(Constants.TEXT_FOR_TOAST)
-        var returnFromCreatePlaylist: Boolean? = arguments?.getBoolean(Constants.RESULT_NAV_CREATE_PLAYLIST)
+        var returnFromCreatePlaylist: Boolean? =
+            arguments?.getBoolean(Constants.RESULT_NAV_CREATE_PLAYLIST)
 
         showToast(textArgument)
 
@@ -43,9 +44,9 @@ class MediatekaFragment : Fragment() {
             }
         tabLayoutMediator.attach()
         Log.d("tag", "returnFromCreatePlaylist " + returnFromCreatePlaylist)
-        if (returnFromCreatePlaylist != null){
+        if (returnFromCreatePlaylist != null) {
             Log.d("tag", "returnFromCreatePlaylist inner " + returnFromCreatePlaylist)
-            binding.viewPager.setCurrentItem(1,false)
+            binding.viewPager.setCurrentItem(1, false)
             returnFromCreatePlaylist = null
         }
     }

@@ -92,8 +92,10 @@ class CreatePlaylistFragment : Fragment() {
                 isPlaceholder
             )
             val bundle =
-                bundleOf(TEXT_FOR_TOAST to ("Плейлист " + binding.textInputEditTitle.text.toString() + " создан"),
-                    RESULT_NAV_CREATE_PLAYLIST to true)
+                bundleOf(
+                    TEXT_FOR_TOAST to ("Плейлист " + binding.textInputEditTitle.text.toString() + " создан"),
+                    RESULT_NAV_CREATE_PLAYLIST to true
+                )
 
             if (requireActivity().supportFragmentManager.backStackEntryCount > 0) {
                 Toast.makeText(
@@ -150,7 +152,10 @@ class CreatePlaylistFragment : Fragment() {
             try {
                 val bundle =
                     bundleOf(RESULT_NAV_CREATE_PLAYLIST to true)
-                findNavController().navigate(R.id.action_createPlaylistFragment_to_mediatekaFragment, bundle)
+                findNavController().navigate(
+                    R.id.action_createPlaylistFragment_to_mediatekaFragment,
+                    bundle
+                )
             } catch (e: Exception) {
                 e.stackTrace
             }

@@ -1,7 +1,7 @@
 package com.example.playlistmaker.utils
 
-import com.example.playlistmaker.createPlaylist.domain.model.Playlist
 import com.example.playlistmaker.createPlaylist.data.db.entity.PlaylistEntity
+import com.example.playlistmaker.createPlaylist.domain.model.Playlist
 
 class PlaylistDbConvertor {
     fun map(playlist: Playlist): PlaylistEntity {
