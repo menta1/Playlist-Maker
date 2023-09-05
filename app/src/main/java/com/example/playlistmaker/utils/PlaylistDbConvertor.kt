@@ -1,7 +1,7 @@
 package com.example.playlistmaker.utils
 
 import com.example.playlistmaker.createPlaylist.domain.model.Playlist
-import com.example.playlistmaker.db.entity.PlaylistEntity
+import com.example.playlistmaker.createPlaylist.data.db.entity.PlaylistEntity
 
 class PlaylistDbConvertor {
     fun map(playlist: Playlist): PlaylistEntity {
@@ -21,7 +21,7 @@ class PlaylistDbConvertor {
             playlist.filePath,
             playlist.listIdTracks,
             playlist.countTracks,
-            playlist.id
+            playlist.playlistId
         )
     }
 

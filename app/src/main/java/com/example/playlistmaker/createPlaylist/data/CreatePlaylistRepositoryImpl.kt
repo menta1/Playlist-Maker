@@ -7,7 +7,7 @@ import android.net.Uri
 import android.os.Environment
 import com.example.playlistmaker.createPlaylist.domain.CreatePlaylistRepository
 import com.example.playlistmaker.createPlaylist.domain.model.Playlist
-import com.example.playlistmaker.db.AppDatabase
+import com.example.playlistmaker.AppDatabase
 import com.example.playlistmaker.utils.PlaylistDbConvertor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

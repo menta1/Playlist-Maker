@@ -1,4 +1,4 @@
-package com.example.playlistmaker.db.entity
+package com.example.playlistmaker.createPlaylist.data.db.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -11,5 +11,5 @@ data class PlaylistEntity(
     var listIdTracks: String,
     var countTracks: Int,
     @PrimaryKey(autoGenerate = true)
-    val id: Int? = null
+    val playlistId: Int? = null
 )

@@ -1,7 +1,8 @@
 package com.example.playlistmaker.player.data
 
+import com.example.playlistmaker.AppDatabase
+import com.example.playlistmaker.createPlaylist.data.db.entity.PlaylistSongCrossRef
 import com.example.playlistmaker.createPlaylist.domain.model.Playlist
-import com.example.playlistmaker.db.AppDatabase
 import com.example.playlistmaker.player.domain.PlayerRepository
 import com.example.playlistmaker.player.domain.model.Track
 import com.example.playlistmaker.utils.PlaylistDbConvertor
@@ -39,7 +40,8 @@ class PlayerRepositoryImpl(
 
     override suspend fun addTrackToPlaylist(trackId: Int, id: Int): Boolean {
         val playlist = appDatabase.playlistDao().getPlaylistById(id)
-        appDatabase.trackInPlaylistDao().insertPlaylist(trackDbConvertor.mapInPlaylist(openTrack!!))
+        appDatabase.playlistDao()
+            .upsertPlaylistSongCrossRef(PlaylistSongCrossRef(playlist.playlistId!!, trackId))
         var listId: MutableList<String> = listOf<String>().toMutableList()
         if (playlist.listIdTracks.isEmpty()) {
             listId.add(trackId.toString())

@@ -9,11 +9,13 @@ import com.example.playlistmaker.createPlaylist.domain.model.Playlist
 import com.example.playlistmaker.player.domain.PlayerInteractor
 import com.example.playlistmaker.player.domain.model.Track
 import com.example.playlistmaker.player.ui.PlayerModelState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -63,9 +65,11 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
 
     fun onClick(trackId: Int, id: Int) {
         viewModelScope.launch {
-            _resultAdding.postValue(playerInteractor.addTrackToPlaylist(trackId, id))
-            playerInteractor.getAllPlaylists().collect {
-                _playlist.value = it
+            withContext(Dispatchers.IO){
+                _resultAdding.postValue(playerInteractor.addTrackToPlaylist(trackId, id))
+                playerInteractor.getAllPlaylists().collect {
+                    _playlist.value = it
+                }
             }
         }
     }

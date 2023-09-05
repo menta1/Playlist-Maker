@@ -2,7 +2,7 @@ package com.example.playlistmaker.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.playlistmaker.db.AppDatabase
+import com.example.playlistmaker.AppDatabase
 import com.example.playlistmaker.search.data.NetworkClient
 import com.example.playlistmaker.search.data.SearchHistory
 import com.example.playlistmaker.search.data.local.SearchHistoryImpl
