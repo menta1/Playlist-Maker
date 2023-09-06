@@ -15,6 +15,7 @@ import java.util.Locale
 class TrackAdapter(private val listener: Listener) :
     RecyclerView.Adapter<TrackAdapter.TrackHolder>() {
     private val tracks = ArrayList<Track>()
+
     fun setTracks(newTracks: List<Track>?) {
         tracks.clear()
         if (!newTracks.isNullOrEmpty()) {

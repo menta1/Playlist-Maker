@@ -8,7 +8,6 @@ interface SearchInteractor {
     fun searchTracks(expression: String): Flow<Pair<List<Track>?, String?>>
     fun showTrackHistory(): List<Track>
     suspend fun addTrackHistory(track: Track)
-
     fun clearHistory()
     fun startPlayerActivity(track: Track)
 }

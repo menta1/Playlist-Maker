@@ -5,12 +5,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.createPlaylist.domain.model.Playlist
 import com.example.playlistmaker.player.domain.PlayerInteractor
 import com.example.playlistmaker.player.domain.model.Track
 import com.example.playlistmaker.player.ui.PlayerModelState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -19,7 +24,6 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
     private val mediaPlayer = MediaPlayer()
     private var timerJob: Job? = null
     private var isPlayingMediaPlayer: Boolean = false
-
 
     private val _viewStateController = MutableLiveData<PlayerModelState>()
     val viewStateControllerLiveData: LiveData<PlayerModelState> = _viewStateController
@@ -33,9 +37,45 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
     private val _textTrackTime = MutableLiveData<String>()
     val textTrackTime: LiveData<String> = _textTrackTime
 
+    private val _playlist: MutableStateFlow<List<Playlist>> = MutableStateFlow(emptyList())
+    val playlist: StateFlow<List<Playlist>> = _playlist
+
+    private val _resultAdding = MutableLiveData<Boolean>()
+    val resultAdding: LiveData<Boolean> = _resultAdding
+
+    private val _stateForCreatePlaylist = MutableLiveData<Boolean>()
+    val stateForCreatePlaylist: LiveData<Boolean> = _stateForCreatePlaylist
+
+    init {
+        getAllPlaylists()
+    }
+
     override fun onCleared() {
         mediaPlayerRelease()
         super.onCleared()
+    }
+
+    fun getAllPlaylists() {
+        viewModelScope.launch {
+            playerInteractor.getAllPlaylists().collect {
+                _playlist.value = it
+            }
+        }
+    }
+
+    fun onClick(trackId: Int, id: Int) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                _resultAdding.postValue(playerInteractor.addTrackToPlaylist(trackId, id))
+                playerInteractor.getAllPlaylists().collect {
+                    _playlist.value = it
+                }
+            }
+        }
+    }
+
+    fun openViewCreatePlaylist(result: Boolean) {
+        _stateForCreatePlaylist.postValue(result)
     }
 
     fun playPlayer() {
@@ -59,15 +99,15 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
         }
     }
 
-    fun saveState(){
-        if (viewStateControllerLiveData.value == PlayerModelState.Play){
+    fun saveState() {
+        if (viewStateControllerLiveData.value == PlayerModelState.Play) {
             isPlayingMediaPlayer = true
             pausePlayer()
         }
     }
 
-    fun restoreState(){
-        if (isPlayingMediaPlayer){
+    fun restoreState() {
+        if (isPlayingMediaPlayer) {
             isPlayingMediaPlayer = false
             playPlayer()
         }

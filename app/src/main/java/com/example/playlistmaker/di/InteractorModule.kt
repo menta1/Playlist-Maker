@@ -1,7 +1,11 @@
 package com.example.playlistmaker.di
 
-import com.example.playlistmaker.mediateka.domain.FavoriteInteractor
-import com.example.playlistmaker.mediateka.domain.FavoriteInteractorImpl
+import com.example.playlistmaker.createPlaylist.domain.CreatePlaylistInteractor
+import com.example.playlistmaker.createPlaylist.domain.CreatePlaylistInteractorImpl
+import com.example.playlistmaker.mediateka.favorite.domain.FavoriteInteractor
+import com.example.playlistmaker.mediateka.favorite.domain.FavoriteInteractorImpl
+import com.example.playlistmaker.mediateka.playlist.domain.PlaylistInteractor
+import com.example.playlistmaker.mediateka.playlist.domain.PlaylistInteractorImpl
 import com.example.playlistmaker.player.domain.PlayerInteractor
 import com.example.playlistmaker.player.domain.PlayerInteractorImpl
 import com.example.playlistmaker.search.domain.SearchInteractor
@@ -28,5 +32,11 @@ val interactorModule = module {
     }
     single<FavoriteInteractor> {
         FavoriteInteractorImpl(get())
+    }
+    single<CreatePlaylistInteractor> {
+        CreatePlaylistInteractorImpl(get())
+    }
+    single<PlaylistInteractor> {
+        PlaylistInteractorImpl(get())
     }
 }

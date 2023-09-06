@@ -2,7 +2,7 @@ package com.example.playlistmaker.search.data
 
 import android.content.Context
 import android.content.Intent
-import com.example.playlistmaker.db.AppDatabase
+import com.example.playlistmaker.AppDatabase
 import com.example.playlistmaker.player.domain.model.Track
 import com.example.playlistmaker.player.ui.activity.PlayerActivity
 import com.example.playlistmaker.search.data.dto.TrackRequest
