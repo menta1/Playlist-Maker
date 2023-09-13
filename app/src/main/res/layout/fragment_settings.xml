@@ -41,7 +41,7 @@
         android:id="@+id/shareApp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/share"
+        android:text="@string/share_app"
         app:icon="@drawable/share"
         style="@style/buttonSettingsMenu" />
 

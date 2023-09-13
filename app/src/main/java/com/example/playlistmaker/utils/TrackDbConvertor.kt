@@ -36,4 +36,8 @@ class TrackDbConvertor {
             track.isFavorite
         )
     }
+
+    fun convertToTrack(tracks: List<TrackEntity>): List<Track> {
+        return tracks.map { track -> this.map(track) }
+    }
 }

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface PlayerRepository {
     suspend fun getClickedTrack(trackId: Int): Track?
     suspend fun insertTrack(track: Track)
-    suspend fun deleteTrack(track: Track)
+    suspend fun deleteTrack(trackId: Int, playlistId: Int, isFavorite: Boolean)
     suspend fun getAllPlaylists(): Flow<List<Playlist>>
     suspend fun addTrackToPlaylist(trackId: Int, id: Int): Boolean
 }

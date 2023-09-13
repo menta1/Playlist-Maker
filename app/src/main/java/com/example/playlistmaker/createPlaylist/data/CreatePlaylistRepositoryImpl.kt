@@ -49,6 +49,21 @@ class CreatePlaylistRepositoryImpl(
         return insertedId > ROW_ID
     }
 
+    override suspend fun updatePlaylistFields(
+        id: Int,
+        title: String,
+        description: String,
+        filePath: String,
+        uriPick: Uri?
+    ) {
+        if (uriPick == null) {
+            appDatabase.playlistDao().updatePlaylistFields(id, title, description, filePath)
+        } else {
+            appDatabase.playlistDao()
+                .updatePlaylistFields(id, title, description, isPlaceholder(uriPick, false))
+        }
+    }
+
     private suspend fun isPlaceholder(uriPick: Uri?, isPlaceholder: Boolean): String {
         if (!isPlaceholder) {
             val filePath =

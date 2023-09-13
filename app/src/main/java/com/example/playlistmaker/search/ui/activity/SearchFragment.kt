@@ -34,8 +34,8 @@ class SearchFragment : Fragment(), TrackAdapter.Listener {
     }
 
     override fun onResume() {
-        super.onResume()
         viewModel.updateView()
+        super.onResume()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

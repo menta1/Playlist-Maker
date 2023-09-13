@@ -7,12 +7,12 @@ import com.example.playlistmaker.createPlaylist.data.db.entity.PlaylistEntity
 import com.example.playlistmaker.createPlaylist.data.db.entity.PlaylistSongCrossRef
 import com.example.playlistmaker.player.db.TrackEntity
 
-data class PlaylistWithSongs(
-    @Embedded val playlist: PlaylistEntity,
+data class SongWithPlaylists(
+    @Embedded val track: TrackEntity,
     @Relation(
-        parentColumn = "playlistId",
-        entityColumn = "trackId",
+        parentColumn = "trackId",
+        entityColumn = "playlistId",
         associateBy = Junction(PlaylistSongCrossRef::class)
     )
-    val tracks: List<TrackEntity>
+    val playlists: List<PlaylistEntity>
 )

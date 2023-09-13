@@ -6,6 +6,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
 import com.example.playlistmaker.createPlaylist.data.db.PlaylistWithSongs
+import com.example.playlistmaker.createPlaylist.data.db.SongWithPlaylists
 import com.example.playlistmaker.createPlaylist.data.db.entity.PlaylistEntity
 import com.example.playlistmaker.createPlaylist.data.db.entity.PlaylistSongCrossRef
 
@@ -15,11 +16,20 @@ interface PlaylistDao {
     @Upsert
     suspend fun insertPlaylist(playlist: PlaylistEntity): Long
 
+    @Query("UPDATE playlist_table SET title = :title, description = :description, filePath = :filePath  WHERE playlistId = :id")
+    suspend fun updatePlaylistFields(id: Int, title: String, description: String, filePath: String)
+
     @Upsert
     suspend fun upsertPlaylistSongCrossRef(playlistSongCrossRef: PlaylistSongCrossRef): Long
 
     @Delete
+    suspend fun deleteSongWithPlaylists(playlistSongCrossRef: PlaylistSongCrossRef)
+
+    @Delete
     suspend fun deletePlaylist(playlist: PlaylistEntity)
+
+    @Query("DELETE FROM song_cross_ref_table WHERE playlistId = :playlistId")
+    suspend fun deleteByPlaylistId(playlistId: Int)
 
     @Query("SELECT * FROM playlist_table")
     suspend fun getAllPlaylists(): List<PlaylistEntity>
@@ -31,7 +41,7 @@ interface PlaylistDao {
     @Query("SELECT * FROM playlist_table")
     fun getPlaylistsWithSongs(): List<PlaylistWithSongs>
 
-    @Query("SELECT * FROM playlist_song_cross_ref")
-    suspend fun getAllItems(): List<PlaylistSongCrossRef>
-
+    @Transaction
+    @Query("SELECT * FROM track_table")
+    fun getTracksWithPlaylists(): List<SongWithPlaylists>
 }

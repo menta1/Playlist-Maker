@@ -10,11 +10,12 @@ class PlaylistDbConvertor {
             playlist.description,
             playlist.filePath,
             playlist.listIdTracks,
-            playlist.countTracks
+            playlist.countTracks,
+            playlist.id
         )
     }
 
-    private fun map(playlist: PlaylistEntity): Playlist {
+    fun map(playlist: PlaylistEntity): Playlist {
         return Playlist(
             playlist.title,
             playlist.description,

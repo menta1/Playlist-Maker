@@ -2,6 +2,8 @@ package com.example.playlistmaker.di
 
 import com.example.playlistmaker.createPlaylist.domain.CreatePlaylistInteractor
 import com.example.playlistmaker.createPlaylist.domain.CreatePlaylistInteractorImpl
+import com.example.playlistmaker.currentPlaylist.domain.CurrentPlaylistInteractor
+import com.example.playlistmaker.currentPlaylist.domain.CurrentPlaylistInteractorImpl
 import com.example.playlistmaker.mediateka.favorite.domain.FavoriteInteractor
 import com.example.playlistmaker.mediateka.favorite.domain.FavoriteInteractorImpl
 import com.example.playlistmaker.mediateka.playlist.domain.PlaylistInteractor
@@ -9,7 +11,7 @@ import com.example.playlistmaker.mediateka.playlist.domain.PlaylistInteractorImp
 import com.example.playlistmaker.player.domain.PlayerInteractor
 import com.example.playlistmaker.player.domain.PlayerInteractorImpl
 import com.example.playlistmaker.search.domain.SearchInteractor
-import com.example.playlistmaker.search.domain.impl.SearchInteractorImpl
+import com.example.playlistmaker.search.domain.SearchInteractorImpl
 import com.example.playlistmaker.settings.domain.AppThemeInteractor
 import com.example.playlistmaker.settings.domain.impl.AppThemeInteractorImpl
 import com.example.playlistmaker.sharing.SharingInteractor
@@ -38,5 +40,8 @@ val interactorModule = module {
     }
     single<PlaylistInteractor> {
         PlaylistInteractorImpl(get())
+    }
+    single<CurrentPlaylistInteractor> {
+        CurrentPlaylistInteractorImpl(get())
     }
 }

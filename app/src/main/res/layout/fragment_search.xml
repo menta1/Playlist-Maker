@@ -92,7 +92,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            tools:listitem="@layout/song_item" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/clear_history"
