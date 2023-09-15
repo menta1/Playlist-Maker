@@ -2,6 +2,7 @@ package com.example.playlistmaker.currentPlaylist.data
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.example.playlistmaker.AppDatabase
 import com.example.playlistmaker.createPlaylist.data.db.entity.PlaylistSongCrossRef
 import com.example.playlistmaker.createPlaylist.domain.model.Playlist
@@ -39,8 +40,8 @@ class CurrentPlaylistRepositoryImpl(
     }
 
     override fun getAllTracksById(playlistId: Int): Flow<List<Track>> = flow {
-        val a = appDatabase.playlistDao().getPlaylistsWithSongs()
-        for (playlist in a) {
+        val playlistsWithSongsList = appDatabase.playlistDao().getPlaylistsWithSongs()
+        for (playlist in playlistsWithSongsList) {
             if (playlist.playlist.playlistId == playlistId) {
                 tracks = trackDbConvertor.convertToTrack(playlist.tracks)
             }
@@ -51,7 +52,10 @@ class CurrentPlaylistRepositoryImpl(
     override suspend fun deleteTrack(track: Track, playlistId: Int) {
         appDatabase.playlistDao()
             .deleteSongWithPlaylists(PlaylistSongCrossRef(playlistId, track.id))
-        if (!track.isFavorite) {
+        val playlistsCount =
+            appDatabase.playlistDao().getPlaylistCountByTrackId(trackId = track.id)
+        val updatedTrack = appDatabase.trackDao().getTrackById(trackId = track.id.toString())
+        if (!updatedTrack!!.isFavorite && playlistsCount == 0) {
             appDatabase.trackDao().deleteTrack(trackDbConvertor.map(track))
         }
         val playlist = appDatabase.playlistDao().getPlaylistById(playlistId)
@@ -78,7 +82,7 @@ class CurrentPlaylistRepositoryImpl(
         var count = 1
         for (track in tracks) {
             listTracksInfo.add(
-                "$count. ${track.artistName} - ${track.trackName}(${
+                "${count++}. ${track.artistName} - ${track.trackName}(${
                     SimpleDateFormat(
                         "mm",
                         Locale.getDefault()

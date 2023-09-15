@@ -44,4 +44,7 @@ interface PlaylistDao {
     @Transaction
     @Query("SELECT * FROM track_table")
     fun getTracksWithPlaylists(): List<SongWithPlaylists>
+
+    @Query("SELECT COUNT(*) FROM song_cross_ref_table WHERE trackId =:trackId")
+    fun getPlaylistCountByTrackId(trackId: Int): Int
 }
