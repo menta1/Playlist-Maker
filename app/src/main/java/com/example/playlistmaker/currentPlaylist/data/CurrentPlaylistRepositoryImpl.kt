@@ -2,7 +2,6 @@ package com.example.playlistmaker.currentPlaylist.data
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.example.playlistmaker.AppDatabase
 import com.example.playlistmaker.createPlaylist.data.db.entity.PlaylistSongCrossRef
 import com.example.playlistmaker.createPlaylist.domain.model.Playlist
@@ -46,7 +45,7 @@ class CurrentPlaylistRepositoryImpl(
                 tracks = trackDbConvertor.convertToTrack(playlist.tracks)
             }
         }
-        emit(tracks)
+        emit(tracks.reversed())
     }
 
     override suspend fun deleteTrack(track: Track, playlistId: Int) {
@@ -77,32 +76,36 @@ class CurrentPlaylistRepositoryImpl(
         )
     }
 
-    override fun sharePlaylist() {
-        val listTracksInfo: MutableList<String> = mutableListOf()
-        var count = 1
-        for (track in tracks) {
-            listTracksInfo.add(
-                "${count++}. ${track.artistName} - ${track.trackName}(${
-                    SimpleDateFormat(
-                        "mm",
-                        Locale.getDefault()
-                    ).format(track.trackTimeMillis)
-                })"
-            )
+    override fun sharePlaylist(): Boolean {
+        if (tracks.isEmpty()) {
+            return false
+        } else {
+            val listTracksInfo: MutableList<String> = mutableListOf()
+            var count = 1
+            for (track in tracks) {
+                listTracksInfo.add(
+                    "${count++}. ${track.artistName} - ${track.trackName}(${
+                        SimpleDateFormat(
+                            "mm",
+                            Locale.getDefault()
+                        ).format(track.trackTimeMillis)
+                    })"
+                )
+            }
+            val textPlaylist =
+                playlist!!.title + " " + playlist!!.countTracks + " " + changeEnding(playlist!!.countTracks)
+            Intent(Intent.ACTION_SEND).apply {
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    "$textPlaylist \n${listTracksInfo.joinToString("\n")}"
+                )
+                type = "plain/text"
+                val chooserIntent = Intent.createChooser(this, "Выберите приложение")
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                context.startActivity(chooserIntent)
+            }
+            return true
         }
-        val textPlaylist =
-            playlist!!.title + " " + playlist!!.countTracks + " " + changeEnding(playlist!!.countTracks)
-        Intent(Intent.ACTION_SEND).apply {
-            putExtra(
-                Intent.EXTRA_TEXT,
-                "$textPlaylist \n${listTracksInfo.joinToString("\n")}"
-            )
-            type = "plain/text"
-            val chooserIntent = Intent.createChooser(this, "Выберите приложение")
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(chooserIntent)
-        }
-
     }
 
     private fun changeEnding(count: Int): String {

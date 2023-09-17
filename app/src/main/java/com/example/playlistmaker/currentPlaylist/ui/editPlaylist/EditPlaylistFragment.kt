@@ -51,6 +51,8 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
                 title = binding.textInputEditTitle.text.toString(),
                 description = binding.textInputEditDescription.text.toString(), uriPick = uriPick
             )
+        }
+        viewModel.playlistUpdated.observe(viewLifecycleOwner) {
             exitFromFragment()
         }
         binding.materialToolbar.setNavigationOnClickListener {

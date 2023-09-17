@@ -11,5 +11,5 @@ interface CurrentPlaylistRepository {
     suspend fun deleteTrack(track: Track, playlistId: Int)
     fun getSumTimeAllTracks(): Int
     fun startPlayerActivity(track: Track)
-    fun sharePlaylist()
+    fun sharePlaylist(): Boolean
 }

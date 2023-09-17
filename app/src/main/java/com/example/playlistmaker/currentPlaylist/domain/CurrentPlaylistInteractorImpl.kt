@@ -30,7 +30,7 @@ class CurrentPlaylistInteractorImpl(private val repository: CurrentPlaylistRepos
         repository.startPlayerActivity(track)
     }
 
-    override fun sharePlaylist() {
-        repository.sharePlaylist()
+    override fun sharePlaylist(): Boolean {
+        return repository.sharePlaylist()
     }
 }

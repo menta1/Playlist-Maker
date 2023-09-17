@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -130,15 +131,23 @@ class CurrentPlaylistFragment : Fragment(), TrackAdapter.Listener,
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.tracks.collect {
+                if (it.isEmpty()) {
+                    Toast.makeText(
+                        requireActivity(),
+                        "В этом плейлисте нет треков",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
                 adapter.setTracks(it)
             }
         }
 
         binding.shareButton.setOnClickListener {
-            viewModel.share()
+            share()
         }
         binding.textViewShare.setOnClickListener {
-            viewModel.share()
+            share()
+            bottomSheetBehaviorMore.state = BottomSheetBehavior.STATE_HIDDEN
         }
 
         binding.backButton.setOnClickListener {
@@ -169,6 +178,8 @@ class CurrentPlaylistFragment : Fragment(), TrackAdapter.Listener,
                     navToMediatekaPlaylist()
                 }
             })
+        binding.textTitle.isSelected = true
+        binding.textDescription.isSelected = true
     }
 
     override fun onResume() {
@@ -237,5 +248,16 @@ class CurrentPlaylistFragment : Fragment(), TrackAdapter.Listener,
             R.id.action_currentPlaylistFragment_to_mediatekaFragment,
             bundle
         )
+    }
+
+    private fun share() {
+        val result = viewModel.share()
+        if (!result) {
+            Toast.makeText(
+                requireActivity(),
+                "В этом плейлисте нет списка треков, которым можно поделиться",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }

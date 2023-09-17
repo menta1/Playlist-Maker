@@ -26,5 +26,4 @@ interface TrackDao {
 
     @Query("UPDATE track_table SET isFavorite = :isFavorite WHERE trackId = :trackId")
     suspend fun updateUserName(trackId: Int, isFavorite: Boolean)
-
 }

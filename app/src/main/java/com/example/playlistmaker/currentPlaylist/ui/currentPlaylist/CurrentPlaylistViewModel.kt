@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CurrentPlaylistViewModel(private val interactor: CurrentPlaylistInteractor) : ViewModel() {
 
@@ -25,8 +26,8 @@ class CurrentPlaylistViewModel(private val interactor: CurrentPlaylistInteractor
     private val _time = MutableLiveData<Int>().apply { value = 0 }
     val time: LiveData<Int> = _time
 
-    fun share() {
-        interactor.sharePlaylist()
+    fun share(): Boolean {
+        return interactor.sharePlaylist()
     }
 
     suspend fun deletePlaylist() {
@@ -51,8 +52,12 @@ class CurrentPlaylistViewModel(private val interactor: CurrentPlaylistInteractor
     }
 
     fun getPlaylist(id: Int) {
-        viewModelScope.launch {
-            _playlist.postValue(interactor.getPlaylist(id))
+        viewModelScope.launch(Dispatchers.IO) {
+            val newPlaylist = interactor.getPlaylist(id)
+            withContext(Dispatchers.Main) {
+                _playlist.value = newPlaylist
+            }
+
         }
     }
 

@@ -8,7 +8,6 @@ class TrackAdapterForCurrentPlaylist(
     private val longListener: LongListener
 ) : TrackAdapter(listener) {
 
-
     override fun onBindViewHolder(holder: TrackHolder, position: Int) {
         super.onBindViewHolder(holder, position)
 

@@ -10,6 +10,7 @@ import com.example.playlistmaker.createPlaylist.ui.viewmodel.CreatePlaylistViewM
 import com.example.playlistmaker.currentPlaylist.domain.CurrentPlaylistInteractor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class EditPlaylistViewModel(
     interactor: CreatePlaylistInteractor,
@@ -19,6 +20,9 @@ class EditPlaylistViewModel(
 
     private val _playlist = MutableLiveData<Playlist>()
     val playlist: LiveData<Playlist> = _playlist
+
+    private val _playlistUpdated = MutableLiveData<Boolean>()
+    val playlistUpdated: LiveData<Boolean> = _playlistUpdated
 
     fun getPlaylist(playlistId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -35,6 +39,13 @@ class EditPlaylistViewModel(
                 playlist.value!!.filePath,
                 uriPick
             )
+            withContext(Dispatchers.Main) {
+                updated()
+            }
         }
+    }
+
+    private fun updated() {
+        _playlistUpdated.value = true
     }
 }

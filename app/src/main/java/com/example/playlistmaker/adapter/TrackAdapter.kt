@@ -38,7 +38,7 @@ open class TrackAdapter(private val listener: Listener) :
                     listener.onClick(model)
                 }
                 Glide.with(itemView)
-                    .load(model.artworkUrl100)
+                    .load(model.artworkUrl60)
                     .placeholder(R.drawable.placeholder)
                     .centerCrop()
                     .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.rounded_artworkUrl100)))
