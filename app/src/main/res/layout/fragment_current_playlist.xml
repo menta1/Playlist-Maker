@@ -163,9 +163,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            tools:listitem="@layout/song_item">
+            tools:listitem="@layout/song_item" />
 
-        </androidx.recyclerview.widget.RecyclerView>
+        <TextView
+            android:id="@+id/text_no_tracks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/ys_display_regular"
+            android:maxLines="1"
+            android:text="@string/no_tracks"
+            android:textColor="?attr/colorOnSecondary"
+            android:visibility="gone"
+            android:textSize="@dimen/text_size_16" />
 
     </LinearLayout>
 

@@ -132,11 +132,11 @@ class CurrentPlaylistFragment : Fragment(), TrackAdapter.Listener,
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.tracks.collect {
                 if (it.isEmpty()) {
-                    Toast.makeText(
-                        requireActivity(),
-                        "В этом плейлисте нет треков",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    binding.textNoTracks.visibility = View.VISIBLE
+                    binding.recyclerLayout.visibility = View.GONE
+                }else{
+                    binding.textNoTracks.visibility = View.GONE
+                    binding.recyclerLayout.visibility = View.VISIBLE
                 }
                 adapter.setTracks(it)
             }

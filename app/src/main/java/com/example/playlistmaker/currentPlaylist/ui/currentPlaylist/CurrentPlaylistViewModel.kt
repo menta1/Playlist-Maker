@@ -57,7 +57,6 @@ class CurrentPlaylistViewModel(private val interactor: CurrentPlaylistInteractor
             withContext(Dispatchers.Main) {
                 _playlist.value = newPlaylist
             }
-
         }
     }
 
@@ -66,8 +65,11 @@ class CurrentPlaylistViewModel(private val interactor: CurrentPlaylistInteractor
     }
 
     fun sumTimeAllTracks() {
-        viewModelScope.launch(Dispatchers.Main) {
-            _time.value = interactor.getSumTimeAllTracks()
+        viewModelScope.launch(Dispatchers.IO) {
+            val timeReturn = interactor.getSumTimeAllTracks()
+            withContext(Dispatchers.Main) {
+                _time.value = timeReturn
+            }
         }
     }
 

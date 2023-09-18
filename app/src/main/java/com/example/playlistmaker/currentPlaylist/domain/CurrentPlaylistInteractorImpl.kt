@@ -18,8 +18,8 @@ class CurrentPlaylistInteractorImpl(private val repository: CurrentPlaylistRepos
         return repository.getAllTracksById(playlistId)
     }
 
-    override suspend fun deleteTrack(track: Track, playlistId: Int) {
-        repository.deleteTrack(track, playlistId)
+    override suspend fun deleteTrack(track: Track, playlistId: Int): Int {
+        return repository.deleteTrack(track, playlistId)
     }
 
     override fun getSumTimeAllTracks(): Int {

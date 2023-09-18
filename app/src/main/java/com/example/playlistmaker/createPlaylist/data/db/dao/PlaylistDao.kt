@@ -23,7 +23,7 @@ interface PlaylistDao {
     suspend fun upsertPlaylistSongCrossRef(playlistSongCrossRef: PlaylistSongCrossRef): Long
 
     @Delete
-    suspend fun deleteSongWithPlaylists(playlistSongCrossRef: PlaylistSongCrossRef)
+    suspend fun deleteSongWithPlaylists(playlistSongCrossRef: PlaylistSongCrossRef): Int
 
     @Delete
     suspend fun deletePlaylist(playlist: PlaylistEntity)

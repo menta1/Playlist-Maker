@@ -30,6 +30,7 @@ class CurrentPlaylistRepositoryImpl(
 
     override suspend fun getPlaylist(playlistId: Int): Playlist {
         playlist = playlistDbConvertor.map(appDatabase.playlistDao().getPlaylistById(playlistId))
+        getAllTracksById(playlistId)
         return playlist as Playlist
     }
 
@@ -48,8 +49,8 @@ class CurrentPlaylistRepositoryImpl(
         emit(tracks.reversed())
     }
 
-    override suspend fun deleteTrack(track: Track, playlistId: Int) {
-        appDatabase.playlistDao()
+    override suspend fun deleteTrack(track: Track, playlistId: Int): Int {
+        val result = appDatabase.playlistDao()
             .deleteSongWithPlaylists(PlaylistSongCrossRef(playlistId, track.id))
         val playlistsCount =
             appDatabase.playlistDao().getPlaylistCountByTrackId(trackId = track.id)
@@ -64,6 +65,7 @@ class CurrentPlaylistRepositoryImpl(
         playlist.listIdTracks = gson.toJson(listId)
         playlist.countTracks--
         appDatabase.playlistDao().insertPlaylist(playlist)
+        return result
     }
 
     override fun startPlayerActivity(track: Track) {
@@ -121,8 +123,15 @@ class CurrentPlaylistRepositoryImpl(
     }
 
     override fun getSumTimeAllTracks(): Int {
+        var trackList: List<Track> = emptyList()
+        val playlistsWithSongsList = appDatabase.playlistDao().getPlaylistsWithSongs()
+        for (playlistItem in playlistsWithSongsList) {
+            if (playlistItem.playlist.playlistId == playlist?.id) {
+                trackList = trackDbConvertor.convertToTrack(playlistItem.tracks)
+            }
+        }
         var time = 0
-        for (track in tracks) {
+        for (track in trackList) {
             time += track.trackTimeMillis!!
         }
         return time
