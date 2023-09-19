@@ -29,8 +29,19 @@ class PlayerRepositoryImpl(
         appDatabase.trackDao().insertTrack(trackDbConvertor.map(track))
     }
 
-    override suspend fun deleteTrack(track: Track) {
-        appDatabase.trackDao().deleteTrack(trackDbConvertor.map(track))
+    override suspend fun deleteTrack(trackId: Int, playlistId: Int, isFavorite: Boolean) {
+        val associateByList = appDatabase.playlistDao().getTracksWithPlaylists()
+        appDatabase.trackDao().updateUserName(trackId, isFavorite)
+        var tracksVerification = 0
+        for (trackBy in associateByList) {
+            if (trackBy.track.trackId == playlistId.toString()) {
+                tracksVerification++
+            }
+        }
+        if (tracksVerification == 0) {
+            appDatabase.playlistDao()
+                .deleteSongWithPlaylists(PlaylistSongCrossRef(trackId, playlistId))
+        }
     }
 
     override suspend fun getAllPlaylists(): Flow<List<Playlist>> = flow {

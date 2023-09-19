@@ -70,7 +70,8 @@ class SearchRepositoryImpl(
                             releaseDate = it.releaseDate,
                             primaryGenreName = it.primaryGenreName,
                             country = it.country,
-                            previewUrl = it.previewUrl
+                            previewUrl = it.previewUrl,
+                            artworkUrl60 = it.artworkUrl60
                         )
                     }
                     emit(Resource.Success(data))

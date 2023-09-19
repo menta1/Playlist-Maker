@@ -15,8 +15,8 @@ class PlayerInteractorImpl(private val repository: PlayerRepository) :
         repository.insertTrack(track)
     }
 
-    override suspend fun deleteTrack(track: Track) {
-        repository.deleteTrack(track)
+    override suspend fun deleteTrack(trackId: Int, playlistId: Int, isFavorite: Boolean) {
+        repository.deleteTrack(trackId, playlistId, isFavorite)
     }
 
     override suspend fun getAllPlaylists(): Flow<List<Playlist>> {

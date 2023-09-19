@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/searchFragment"
-        android:title="@string/search"
-        android:icon="@drawable/search" />
+        android:icon="@drawable/search"
+        android:title="@string/search" />
     <item
         android:id="@+id/mediatekaFragment"
-        android:title="@string/mediateka"
-        android:icon="@drawable/mediateka" />
+        android:icon="@drawable/mediateka"
+        android:title="@string/mediateka" />
     <item
         android:id="@+id/settingsFragment"
-        android:title="@string/settings"
-        android:icon="@drawable/settings" />
+        android:icon="@drawable/settings"
+        android:title="@string/settings" />
 </menu>

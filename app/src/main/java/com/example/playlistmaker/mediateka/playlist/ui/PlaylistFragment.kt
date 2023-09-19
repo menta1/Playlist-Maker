@@ -16,6 +16,7 @@ import com.example.playlistmaker.adapter.PlaylistAdapter
 import com.example.playlistmaker.createPlaylist.domain.model.Playlist
 import com.example.playlistmaker.databinding.FragmentPlaylistBinding
 import com.example.playlistmaker.utils.Constants.NAVIGATE_FROM_PLAYLIST
+import com.example.playlistmaker.utils.Constants.PLAYLIST_ID
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -75,6 +76,10 @@ class PlaylistFragment : Fragment(), PlaylistAdapter.Listener {
     }
 
     override fun onClick(playlist: Playlist) {
-
+        val bundle = bundleOf(PLAYLIST_ID to playlist.id, NAVIGATE_FROM_PLAYLIST to "true")
+        findNavController().navigate(
+            R.id.action_mediatekaFragment_to_currentPlaylistFragment,
+            bundle
+        )
     }
 }

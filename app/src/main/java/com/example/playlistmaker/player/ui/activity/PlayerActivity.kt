@@ -32,6 +32,7 @@ class PlayerActivity : AppCompatActivity(), PlayerAddToPlaylistAdapter.Listener 
     private lateinit var binding: ActivityPlayerBinding
     private var trackId: Int = 0
     private var playlistTitle: String = ""
+    private var playlistId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -218,7 +219,7 @@ class PlayerActivity : AppCompatActivity(), PlayerAddToPlaylistAdapter.Listener 
     }
 
     override fun onPause() {
-        viewModel.checkLike()
+        viewModel.checkLike(playlistId)
         viewModel.saveState()
         super.onPause()
     }

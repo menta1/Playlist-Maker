@@ -16,4 +16,14 @@ class CreatePlaylistInteractorImpl(private val repository: CreatePlaylistReposit
     ): Boolean {
         return repository.savePlaylist(title, desc, uriPick, isPlaceholder)
     }
+
+    override suspend fun updatePlaylistFields(
+        id: Int,
+        title: String,
+        description: String,
+        filePath: String,
+        uriPick: Uri?
+    ) {
+        repository.updatePlaylistFields(id, title, description, filePath, uriPick)
+    }
 }

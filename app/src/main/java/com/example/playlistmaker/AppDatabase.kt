@@ -15,5 +15,4 @@ import com.example.playlistmaker.player.db.TrackEntity
 abstract class AppDatabase : RoomDatabase() {
     abstract fun trackDao(): TrackDao
     abstract fun playlistDao(): PlaylistDao
-
 }

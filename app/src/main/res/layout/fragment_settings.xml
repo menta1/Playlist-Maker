@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="@dimen/padding_top"
     android:paddingStart="4dp"
+    android:paddingTop="@dimen/padding_top"
     android:paddingEnd="@dimen/padding_end">
 
     <TextView
@@ -14,52 +14,52 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
+        android:layout_marginBottom="24dp"
         android:fontFamily="@font/ys_display_medium"
         android:letterSpacing="0"
         android:text="@string/settings"
         android:textAllCaps="false"
         android:textColor="?attr/colorOnSecondary"
         android:textFontWeight="500"
-        android:textSize="@dimen/main_text_size_22"
-        android:layout_marginBottom="24dp" />
+        android:textSize="@dimen/main_text_size_22" />
 
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/themeSwitcher"
-        android:text="@string/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="21dp"
-        android:layout_marginStart="16dp"
         android:layout_gravity="start"
-        android:textSize="@dimen/text_size_16"
-        android:letterSpacing="0"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="21dp"
         android:fontFamily="@font/ys_display_medium"
-        android:textColor="?attr/colorOnSecondary" />
+        android:letterSpacing="0"
+        android:text="@string/black"
+        android:textColor="?attr/colorOnSecondary"
+        android:textSize="@dimen/text_size_16" />
 
     <Button
         android:id="@+id/shareApp"
+        style="@style/buttonSettingsMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/share"
-        app:icon="@drawable/share"
-        style="@style/buttonSettingsMenu" />
+        android:text="@string/share_app"
+        app:icon="@drawable/share" />
 
     <Button
         android:id="@+id/writeSupport"
+        style="@style/buttonSettingsMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/help"
-        app:icon="@drawable/support"
-        style="@style/buttonSettingsMenu" />
+        app:icon="@drawable/support" />
 
     <Button
         android:id="@+id/termsUse"
+        style="@style/buttonSettingsMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/terms"
-        app:icon="@drawable/arrow_forward"
-        style="@style/buttonSettingsMenu" />
+        app:icon="@drawable/arrow_forward" />
 
 
 </LinearLayout>

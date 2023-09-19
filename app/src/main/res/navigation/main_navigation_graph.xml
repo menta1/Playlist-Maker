@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_mediatekaFragment_to_createPlaylistFragment"
             app:destination="@id/createPlaylistFragment" />
+        <action
+            android:id="@+id/action_mediatekaFragment_to_currentPlaylistFragment"
+            app:destination="@id/currentPlaylistFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -47,5 +50,28 @@
         <action
             android:id="@+id/action_createPlaylistFragment_to_mediatekaFragment"
             app:destination="@id/mediatekaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/currentPlaylistFragment"
+        android:name="com.example.playlistmaker.currentPlaylist.ui.currentPlaylist.CurrentPlaylistFragment"
+        android:label="fragment_current_playlist"
+        tools:layout="@layout/fragment_current_playlist">
+        <action
+            android:id="@+id/action_currentPlaylistFragment_to_playerActivity"
+            app:destination="@id/playerActivity" />
+        <action
+            android:id="@+id/action_currentPlaylistFragment_to_mediatekaFragment"
+            app:destination="@id/mediatekaFragment" />
+        <action
+            android:id="@+id/action_currentPlaylistFragment_to_editPlaylistFragment"
+            app:destination="@id/editPlaylistFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editPlaylistFragment"
+        android:name="com.example.playlistmaker.currentPlaylist.ui.editPlaylist.EditPlaylistFragment"
+        android:label="EditPlaylistFragment">
+        <action
+            android:id="@+id/action_editPlaylistFragment_to_currentPlaylistFragment"
+            app:destination="@id/currentPlaylistFragment" />
     </fragment>
 </navigation>

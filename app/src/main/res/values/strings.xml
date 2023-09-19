@@ -4,7 +4,7 @@
     <string name="search">Поиск</string>
     <string name="settings">Настройки</string>
     <string name="mediateka">Медиатека</string>
-    <string name="share">Поделиться приложением</string>
+    <string name="share_app">Поделиться приложением</string>
     <string name="black">Темная тема</string>
     <string name="help">Написать в поддержку</string>
     <string name="terms">Пользовательское соглашение</string>
@@ -36,5 +36,24 @@
     <string name="all_unsaved_data_will_be_lost">Все несохраненные данные будут потеряны</string>
     <string name="complete">Завершить</string>
     <string name="cancel">Отмена</string>
-
+    <string name="duration">Длительность</string>
+    <string name="genre">Жанр</string>
+    <string name="country">Страна</string>
+    <string name="album_picture">album picture</string>
+    <string name="back_button">back button</string>
+    <string name="_00_00">00:00</string>
+    <string name="add_to_playlist">add to playlist</string>
+    <string name="play">play button</string>
+    <string name="pause_button">pause button</string>
+    <string name="like_button">like button</string>
+    <string name="album">Альбом</string>
+    <string name="year">Год</string>
+    <string name="add_playlist">Добавить в плейлист</string>
+    <string name="delete_track">Удалить трек</string>
+    <string name="sure_delete_track">Вы уверены, что хотите удалить трек из плейлиста?</string>
+    <string name="delete">Удалить</string>
+    <string name="share">Поделиться</string>
+    <string name="edit_info">Редактировать информацию</string>
+    <string name="delete_playlist">Удалить плейлист</string>
+    <string name="no_tracks">В этом плейлисте нет треков</string>
 </resources>

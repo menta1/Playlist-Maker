@@ -37,4 +37,9 @@
         <item name="android:textColor">?attr/colorOnSecondary</item>
         <item name="android:textSize">@dimen/main_text_size_22</item>
     </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowBackground">?attr/colorOnPrimary</item>
+        <!-- Другие атрибуты стиля -->
+    </style>
 </resources>

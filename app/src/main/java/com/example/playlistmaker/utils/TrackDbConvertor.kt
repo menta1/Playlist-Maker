@@ -10,6 +10,7 @@ class TrackDbConvertor {
             track.artistName,
             track.trackTimeMillis,
             track.artworkUrl100,
+            track.artworkUrl60,
             track.trackName,
             track.collectionName,
             track.releaseDate,
@@ -27,6 +28,7 @@ class TrackDbConvertor {
             track.artistName,
             track.trackTimeMillis,
             track.artworkUrl100,
+            track.artworkUrl60,
             track.trackName,
             track.collectionName,
             track.releaseDate,
@@ -35,5 +37,9 @@ class TrackDbConvertor {
             track.previewUrl,
             track.isFavorite
         )
+    }
+
+    fun convertToTrack(tracks: List<TrackEntity>): List<Track> {
+        return tracks.map { track -> this.map(track) }
     }
 }

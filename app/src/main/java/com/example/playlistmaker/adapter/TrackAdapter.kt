@@ -12,9 +12,9 @@ import com.example.playlistmaker.player.domain.model.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TrackAdapter(private val listener: Listener) :
+open class TrackAdapter(private val listener: Listener) :
     RecyclerView.Adapter<TrackAdapter.TrackHolder>() {
-    private val tracks = ArrayList<Track>()
+    protected val tracks = ArrayList<Track>()
 
     fun setTracks(newTracks: List<Track>?) {
         tracks.clear()
@@ -24,7 +24,7 @@ class TrackAdapter(private val listener: Listener) :
         notifyDataSetChanged()
     }
 
-    class TrackHolder(itemSong: View) : RecyclerView.ViewHolder(itemSong) {
+    open class TrackHolder(itemSong: View) : RecyclerView.ViewHolder(itemSong) {
         private val binding = SongItemBinding.bind(itemSong)
         fun bind(model: Track, listener: Listener) =
             with(binding) {
@@ -38,7 +38,7 @@ class TrackAdapter(private val listener: Listener) :
                     listener.onClick(model)
                 }
                 Glide.with(itemView)
-                    .load(model.artworkUrl100)
+                    .load(model.artworkUrl60)
                     .placeholder(R.drawable.placeholder)
                     .centerCrop()
                     .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.rounded_artworkUrl100)))

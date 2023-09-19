@@ -19,19 +19,20 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.createPlaylist.ui.viewmodel.CreatePlaylistViewModel
 import com.example.playlistmaker.databinding.FragmentCreatePlaylistBinding
 import com.example.playlistmaker.utils.Constants.NAVIGATE_FROM_PLAYLIST
-import com.example.playlistmaker.utils.Constants.RESULT_NAV_CREATE_PLAYLIST
+import com.example.playlistmaker.utils.Constants.RESULT_NAV_CREATE_OR_CURRENT_PLAYLIST
 import com.example.playlistmaker.utils.Constants.TEXT_FOR_TOAST
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class CreatePlaylistFragment : Fragment() {
+open class CreatePlaylistFragment : Fragment() {
 
-    private val viewModel by viewModel<CreatePlaylistViewModel>()
-    private lateinit var binding: FragmentCreatePlaylistBinding
+    open val viewModel by viewModel<CreatePlaylistViewModel>()
+    lateinit var binding: FragmentCreatePlaylistBinding
     private lateinit var confirmDialog: MaterialAlertDialogBuilder
-    private var uriPick: Uri? = null
+    open var uriPick: Uri? = null
+    open var isPlaceholder = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -42,7 +43,6 @@ class CreatePlaylistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val textArgument: String? = arguments?.getString(NAVIGATE_FROM_PLAYLIST)
         if (textArgument != null) {
             requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility =
@@ -81,7 +81,6 @@ class CreatePlaylistFragment : Fragment() {
         })
 
         binding.buttonCreate.setOnClickListener {
-            var isPlaceholder = true
             if (uriPick != null) {
                 isPlaceholder = false
             }
@@ -94,7 +93,7 @@ class CreatePlaylistFragment : Fragment() {
             val bundle =
                 bundleOf(
                     TEXT_FOR_TOAST to ("Плейлист " + binding.textInputEditTitle.text.toString() + " создан"),
-                    RESULT_NAV_CREATE_PLAYLIST to true
+                    RESULT_NAV_CREATE_OR_CURRENT_PLAYLIST to true
                 )
 
             if (requireActivity().supportFragmentManager.backStackEntryCount > 0) {
@@ -143,7 +142,7 @@ class CreatePlaylistFragment : Fragment() {
         }
     }
 
-    private fun exitFromFragment() {
+    open fun exitFromFragment() {
         if (requireActivity().supportFragmentManager.backStackEntryCount > 0) {
             requireActivity().supportFragmentManager.popBackStack()
         } else {
@@ -151,7 +150,7 @@ class CreatePlaylistFragment : Fragment() {
                 View.VISIBLE
             try {
                 val bundle =
-                    bundleOf(RESULT_NAV_CREATE_PLAYLIST to true)
+                    bundleOf(RESULT_NAV_CREATE_OR_CURRENT_PLAYLIST to true)
                 findNavController().navigate(
                     R.id.action_createPlaylistFragment_to_mediatekaFragment,
                     bundle

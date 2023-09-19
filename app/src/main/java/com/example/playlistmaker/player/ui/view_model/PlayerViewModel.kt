@@ -24,6 +24,7 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
     private val mediaPlayer = MediaPlayer()
     private var timerJob: Job? = null
     private var isPlayingMediaPlayer: Boolean = false
+    private var playlistId = 0
 
     private val _viewStateController = MutableLiveData<PlayerModelState>()
     val viewStateControllerLiveData: LiveData<PlayerModelState> = _viewStateController
@@ -91,10 +92,11 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
         _textTrackTime.value = getCurrentPlayerPosition()
     }
 
-    fun checkLike() {
+    fun checkLike(playlistId: Int) {
+        this.playlistId = playlistId
         if (_trackIsLike.value == false) {
-            viewModelScope.launch {
-                _trackLiveData.value?.let { playerInteractor.deleteTrack(it) }
+            viewModelScope.launch(Dispatchers.IO) {
+                _trackLiveData.value?.let { playerInteractor.deleteTrack(it.id, playlistId, false) }
             }
         }
     }
@@ -156,8 +158,8 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
         if (_trackIsLike.value == true) {
             _trackIsLike.value = false
             _trackLiveData.value?.isFavorite = false
-            viewModelScope.launch {
-                _trackLiveData.value?.let { playerInteractor.deleteTrack(it) }
+            viewModelScope.launch(Dispatchers.IO) {
+                _trackLiveData.value?.let { playerInteractor.deleteTrack(it.id, playlistId, false) }
             }
         } else {
             _trackIsLike.value = true

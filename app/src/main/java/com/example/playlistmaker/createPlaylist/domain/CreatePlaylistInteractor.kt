@@ -10,4 +10,9 @@ interface CreatePlaylistInteractor {
         uriPick: Uri?,
         isPlaceholder: Boolean
     ): Boolean
+
+    suspend fun updatePlaylistFields(
+        id: Int, title: String, description: String, filePath: String,
+        uriPick: Uri?
+    )
 }
