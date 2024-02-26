@@ -117,41 +117,6 @@
                 app:layout_constraintStart_toEndOf="@+id/buttonAddToPlaylist"
                 app:layout_constraintTop_toTopOf="@+id/buttonAddToPlaylist" />
 
-<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--                android:id="@+id/buttonPlay"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:backgroundTint="?attr/colorOnSecondary"-->
-<!--                android:contentDescription="@string/play"-->
-<!--                android:foregroundGravity="center"-->
-<!--                android:src="@drawable/button_play"-->
-<!--                android:visibility="gone"-->
-<!--                app:fabCustomSize="83dp"-->
-<!--                app:layout_constraintEnd_toStartOf="@+id/buttonLike"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/buttonAddToPlaylist"-->
-<!--                app:maxImageSize="64dp"-->
-
-
-<!--                app:tint="?attr/colorOnPrimary"-->
-<!--                tools:layout_editor_absoluteY="472dp" />-->
-
-<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--                android:id="@+id/buttonPause"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="32dp"-->
-<!--                android:backgroundTint="?attr/colorOnPrimary"-->
-<!--                android:contentDescription="@string/pause_button"-->
-<!--                android:foregroundGravity="center"-->
-<!--                android:src="@drawable/button_pause"-->
-<!--                android:visibility="gone"-->
-<!--                app:fabCustomSize="83dp"-->
-<!--                app:layout_constraintEnd_toStartOf="@+id/buttonLike"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/buttonAddToPlaylist"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/textArtistNameVariable"-->
-<!--                app:maxImageSize="83dp"-->
-<!--                app:tint="?attr/colorOnSecondary" />-->
-
             <ImageButton
                 android:id="@+id/buttonLike"
                 android:layout_width="wrap_content"
@@ -163,7 +128,6 @@
                 android:src="@drawable/button_heard_notlike"
                 app:layout_constraintEnd_toStartOf="@+id/right_guideline"
                 app:layout_constraintTop_toBottomOf="@+id/textArtistNameVariable" />
-
 
             <TextView
                 android:id="@+id/textTrackTime"
@@ -388,7 +352,6 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </androidx.fragment.app.FragmentContainerView>
+        android:layout_height="match_parent"></androidx.fragment.app.FragmentContainerView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

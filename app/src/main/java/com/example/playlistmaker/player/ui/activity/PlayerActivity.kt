@@ -182,20 +182,20 @@ class PlayerActivity : AppCompatActivity(), PlayerAddToPlaylistAdapter.Listener 
     }
 
     private fun statePlay() {
-        binding.playbackButton.playing(PlaybackState.PLAY)
+        binding.playbackButton.changeStatePlayer(PlaybackState.PLAY)
     }
 
     private fun statePause() {
-        binding.playbackButton.playing(PlaybackState.PAUSE)
+        binding.playbackButton.changeStatePlayer(PlaybackState.PAUSE)
     }
 
     private fun statePrepared() {
-        binding.playbackButton.playing(PlaybackState.PAUSE)
+        binding.playbackButton.changeStatePlayer(PlaybackState.PAUSE)
     }
 
     private fun stateCompletion() {
         binding.playbackButton.isEnabled = true
-        binding.playbackButton.playing(PlaybackState.PAUSE)
+        binding.playbackButton.changeStatePlayer(PlaybackState.PAUSE)
     }
 
     private fun createPlaylist(fragment: Fragment) {

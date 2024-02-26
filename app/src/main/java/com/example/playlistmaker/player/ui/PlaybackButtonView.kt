@@ -27,7 +27,7 @@ class PlaybackButtonView @JvmOverloads constructor(
     private val minViewSize = resources.getDimensionPixelSize(R.dimen.playback_button)
     lateinit var onClickListener: () -> Unit
 
-    fun playing(state: PlaybackState) {
+    fun changeStatePlayer(state: PlaybackState) {
         playbackState = state
         invalidate()
     }
