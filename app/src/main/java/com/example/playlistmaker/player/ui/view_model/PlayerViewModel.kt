@@ -130,7 +130,6 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
             }
             mediaPlayer.setOnCompletionListener {
                 _viewStateController.value = PlayerModelState.Completion
-                _viewStateController.value = PlayerModelState.Pause
                 timerJob?.cancel()
                 _textTrackTime.value = "00:00"
             }
