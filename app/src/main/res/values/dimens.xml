@@ -12,5 +12,5 @@
     <dimen name="text_size_19">19sp</dimen>
     <dimen name="rounded_artworkUrl100">2dp</dimen>
     <dimen name="rounded_artworkUrl100_high">8dp</dimen>
-
+    <dimen name="playback_button">84dp</dimen>
 </resources>

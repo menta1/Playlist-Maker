@@ -18,6 +18,7 @@ import com.example.playlistmaker.createPlaylist.domain.model.Playlist
 import com.example.playlistmaker.createPlaylist.ui.fragment.CreatePlaylistFragment
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.player.domain.model.Track
+import com.example.playlistmaker.player.ui.PlaybackState
 import com.example.playlistmaker.player.ui.PlayerModelState
 import com.example.playlistmaker.player.ui.view_model.PlayerViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -63,26 +64,18 @@ class PlayerActivity : AppCompatActivity(), PlayerAddToPlaylistAdapter.Listener 
                 textTrackNameVariable.text = it.trackName
                 textArtistNameVariable.text = it.artistName
                 textTrackTimeMillisVariable.text = (SimpleDateFormat(
-                    "mm:ss",
-                    Locale.getDefault()
+                    "mm:ss", Locale.getDefault()
                 ).format(it.trackTimeMillis)).toString()
-                textCollectionNameVariable.text =
-                    collectionNameIsEmpty(it)
-                textReleaseDateVariable.text =
-                    it.releaseDate?.substring(0, 4)
-                textPrimaryGenreNameVariable.text =
-                    it.primaryGenreName
+                textCollectionNameVariable.text = collectionNameIsEmpty(it)
+                textReleaseDateVariable.text = it.releaseDate?.substring(0, 4)
+                textPrimaryGenreNameVariable.text = it.primaryGenreName
                 textCountryVariable.text = it.country
             }
-            Glide.with(binding.root)
-                .load(
-                    it.artworkUrl100?.replaceAfterLast(
-                        '/',
-                        "512x512bb.jpg"
-                    )
+            Glide.with(binding.root).load(
+                it.artworkUrl100?.replaceAfterLast(
+                    '/', "512x512bb.jpg"
                 )
-                .placeholder(R.drawable.placeholder_high)
-                .centerCrop()
+            ).placeholder(R.drawable.placeholder_high).centerCrop()
                 .transform(RoundedCorners(binding.root.resources.getDimensionPixelSize(R.dimen.rounded_artworkUrl100_high)))
                 .into(binding.placeholderArtworkUrl100)
         }
@@ -140,16 +133,9 @@ class PlayerActivity : AppCompatActivity(), PlayerAddToPlaylistAdapter.Listener 
             }
         }
 
-
         binding.textTrackNameVariable.isSelected = true
         binding.backButton.setOnClickListener {
             finish()
-        }
-        binding.buttonPlay.setOnClickListener {
-            viewModel.playPlayer()
-        }
-        binding.buttonPause.setOnClickListener {
-            viewModel.pausePlayer()
         }
         binding.buttonLike.setOnClickListener {
             viewModel.changeLiked()
@@ -171,9 +157,7 @@ class PlayerActivity : AppCompatActivity(), PlayerAddToPlaylistAdapter.Listener 
                     .show()
             } else {
                 Toast.makeText(
-                    this,
-                    "Трек уже добавлен в плейлист $playlistTitle",
-                    Toast.LENGTH_SHORT
+                    this, "Трек уже добавлен в плейлист $playlistTitle", Toast.LENGTH_SHORT
                 ).show()
             }
         }
@@ -189,6 +173,29 @@ class PlayerActivity : AppCompatActivity(), PlayerAddToPlaylistAdapter.Listener 
         viewModel.textTrackTime.observe(this) {
             binding.textTrackTime.text = it
         }
+        binding.playbackButton.onClickListener = {
+            when (binding.playbackButton.getPlaybackState()) {
+                PlaybackState.PLAY -> viewModel.playPlayer()
+                PlaybackState.PAUSE -> viewModel.pausePlayer()
+            }
+        }
+    }
+
+    private fun statePlay() {
+        binding.playbackButton.playing(PlaybackState.PLAY)
+    }
+
+    private fun statePause() {
+        binding.playbackButton.playing(PlaybackState.PAUSE)
+    }
+
+    private fun statePrepared() {
+        binding.playbackButton.playing(PlaybackState.PAUSE)
+    }
+
+    private fun stateCompletion() {
+        binding.playbackButton.isEnabled = true
+        binding.playbackButton.playing(PlaybackState.PAUSE)
     }
 
     private fun createPlaylist(fragment: Fragment) {
@@ -197,25 +204,6 @@ class PlayerActivity : AppCompatActivity(), PlayerAddToPlaylistAdapter.Listener 
             addToBackStack(null)
             add(R.id.fragment_container_view, fragment)
         }
-    }
-
-    private fun statePlay() {
-        binding.buttonPlay.visibility = View.GONE
-        binding.buttonPause.visibility = View.VISIBLE
-    }
-
-    private fun statePause() {
-        binding.buttonPlay.visibility = View.VISIBLE
-        binding.buttonPause.visibility = View.GONE
-    }
-
-    private fun statePrepared() {
-        binding.buttonPlay.visibility = View.VISIBLE
-        binding.buttonPause.visibility = View.GONE
-    }
-
-    private fun stateCompletion() {
-        binding.buttonPlay.isEnabled = true
     }
 
     override fun onPause() {
