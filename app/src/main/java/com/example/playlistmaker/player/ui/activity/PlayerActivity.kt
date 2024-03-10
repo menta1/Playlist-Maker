@@ -1,9 +1,12 @@
 package com.example.playlistmaker.player.ui.activity
 
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.Lifecycle
@@ -21,6 +24,7 @@ import com.example.playlistmaker.player.domain.model.Track
 import com.example.playlistmaker.player.ui.PlaybackState
 import com.example.playlistmaker.player.ui.PlayerModelState
 import com.example.playlistmaker.player.ui.view_model.PlayerViewModel
+import com.example.playlistmaker.utils.InternetCheckReceiver
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,6 +38,7 @@ class PlayerActivity : AppCompatActivity(), PlayerAddToPlaylistAdapter.Listener 
     private var trackId: Int = 0
     private var playlistTitle: String = ""
     private var playlistId = 0
+    private val internetCheckReceiver = InternetCheckReceiver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -209,11 +214,20 @@ class PlayerActivity : AppCompatActivity(), PlayerAddToPlaylistAdapter.Listener 
     override fun onPause() {
         viewModel.checkLike(playlistId)
         viewModel.saveState()
+        unregisterReceiver(internetCheckReceiver)
         super.onPause()
     }
 
+
+
     override fun onResume() {
         viewModel.restoreState()
+        ActivityCompat.registerReceiver(
+            this,
+            internetCheckReceiver,
+            IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION),
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
         super.onResume()
     }
 
