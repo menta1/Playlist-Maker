@@ -74,6 +74,9 @@ class CurrentPlaylistRepositoryImpl(
                 context, PlayerActivity::class.java
             ).apply {
                 putExtra("trackId", track.id)
+                putExtra("trackUrl", track.previewUrl)
+                putExtra("trackName", track.trackName)
+                putExtra("trackArtist", track.artistName)
             }.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         )
     }
