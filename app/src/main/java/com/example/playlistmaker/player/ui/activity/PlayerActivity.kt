@@ -1,9 +1,17 @@
 package com.example.playlistmaker.player.ui.activity
 
+import android.Manifest
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
 import android.content.IntentFilter
+import android.content.ServiceConnection
+import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -21,8 +29,9 @@ import com.example.playlistmaker.createPlaylist.domain.model.Playlist
 import com.example.playlistmaker.createPlaylist.ui.fragment.CreatePlaylistFragment
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.player.domain.model.Track
+import com.example.playlistmaker.player.ui.MusicService
 import com.example.playlistmaker.player.ui.PlaybackState
-import com.example.playlistmaker.player.ui.PlayerModelState
+import com.example.playlistmaker.player.ui.PlayerState
 import com.example.playlistmaker.player.ui.view_model.PlayerViewModel
 import com.example.playlistmaker.utils.InternetCheckReceiver
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -36,9 +45,47 @@ class PlayerActivity : AppCompatActivity(), PlayerAddToPlaylistAdapter.Listener 
     private val viewModel by viewModel<PlayerViewModel>()
     private lateinit var binding: ActivityPlayerBinding
     private var trackId: Int = 0
+    private var trackUrl: String = ""
+    private var trackName: String = ""
+    private var trackArtist: String = ""
     private var playlistTitle: String = ""
     private var playlistId = 0
     private val internetCheckReceiver = InternetCheckReceiver()
+
+    private val serviceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            val binder = service as MusicService.MusicServiceBinder
+            viewModel.setAudioPlayerControl(binder.getService())
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            viewModel.removeAudioPlayerControl()
+        }
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            bindMusicService()
+        } else {
+            Toast.makeText(this, "Can't bind service!", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun bindMusicService() {
+        val intent = Intent(this, MusicService::class.java).apply {
+            putExtra("song_url", trackUrl)
+            putExtra("trackName", trackName)
+            putExtra("trackArtist", trackArtist)
+        }
+
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
+    }
+
+    private fun unbindMusicService() {
+        unbindService(serviceConnection)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,10 +96,20 @@ class PlayerActivity : AppCompatActivity(), PlayerAddToPlaylistAdapter.Listener 
         binding.recyclerLayout.adapter = adapter
         binding.recyclerLayout.layoutManager = LinearLayoutManager(this)
 
+        trackId = intent.getIntExtra("trackId", -1)
+        trackUrl = intent.getStringExtra("trackUrl") ?: ""
+        trackName = intent.getStringExtra("trackName") ?: ""
+        trackArtist = intent.getStringExtra("trackArtist") ?: ""
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            bindMusicService()
+        }
+
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistsBottomSheet).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
-        trackId = intent.getIntExtra("trackId", -1)
 
         if (savedInstanceState == null) {
             viewModel.preparePlayer(trackId)
@@ -85,14 +142,6 @@ class PlayerActivity : AppCompatActivity(), PlayerAddToPlaylistAdapter.Listener 
                 .into(binding.placeholderArtworkUrl100)
         }
 
-        viewModel.viewStateControllerLiveData.observe(this) { state ->
-            when (state) {
-                is PlayerModelState.Play -> statePlay()
-                is PlayerModelState.Pause -> statePause()
-                is PlayerModelState.Prepared -> statePrepared()
-                is PlayerModelState.Completion -> stateCompletion()
-            }
-        }
 
         viewModel.stateForCreatePlaylist.observe(this) {
             if (it) {
@@ -148,7 +197,6 @@ class PlayerActivity : AppCompatActivity(), PlayerAddToPlaylistAdapter.Listener 
         binding.buttonCreate.setOnClickListener {
             createPlaylist(CreatePlaylistFragment())
         }
-
         binding.buttonAddToPlaylist.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             binding.overlay.visibility = View.VISIBLE
@@ -180,8 +228,17 @@ class PlayerActivity : AppCompatActivity(), PlayerAddToPlaylistAdapter.Listener 
         }
         binding.playbackButton.onClickListener = {
             when (binding.playbackButton.getPlaybackState()) {
-                PlaybackState.PLAY -> viewModel.playPlayer()
-                PlaybackState.PAUSE -> viewModel.pausePlayer()
+                PlaybackState.PLAY -> viewModel.onPlayerButtonClicked(false)
+                PlaybackState.PAUSE -> viewModel.onPlayerButtonClicked(true)
+            }
+        }
+
+        viewModel.observePlayerState().observe(this) { state ->
+            when (state) {
+                is PlayerState.Default -> statePrepared()
+                is PlayerState.Paused -> statePause()
+                is PlayerState.Playing -> statePlay()
+                is PlayerState.Prepared -> stateCompletion()
             }
         }
     }
@@ -213,15 +270,18 @@ class PlayerActivity : AppCompatActivity(), PlayerAddToPlaylistAdapter.Listener 
 
     override fun onPause() {
         viewModel.checkLike(playlistId)
-        viewModel.saveState()
+        viewModel.showNotification()
         unregisterReceiver(internetCheckReceiver)
         super.onPause()
     }
 
-
+    override fun onDestroy() {
+        unbindMusicService()
+        super.onDestroy()
+    }
 
     override fun onResume() {
-        viewModel.restoreState()
+        viewModel.hideNotification()
         ActivityCompat.registerReceiver(
             this,
             internetCheckReceiver,
