@@ -3,6 +3,7 @@ package com.example.playlistmaker.settings.data
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmaker.settings.domain.AppThemeRepository
 import com.example.playlistmaker.utils.Constants.DARK_THEME
