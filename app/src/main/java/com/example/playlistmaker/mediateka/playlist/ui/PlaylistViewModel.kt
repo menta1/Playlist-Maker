@@ -14,13 +14,6 @@ class PlaylistViewModel(private val interactor: PlaylistInteractor) : ViewModel(
     private val _state = MutableStateFlow(PlaylistState.Initial)
     val state: StateFlow<PlaylistState> = _state.asStateFlow()
 
-//    private val _playlist: MutableStateFlow<PlaylistUiState> = MutableStateFlow(
-//        PlaylistUiState.HasPlaylists(
-//            emptyList()
-//        )
-//    )
-//    val playlist: StateFlow<PlaylistUiState> = _playlist
-
     init {
         getPlaylists()
     }
@@ -40,16 +33,4 @@ class PlaylistViewModel(private val interactor: PlaylistInteractor) : ViewModel(
             }
         }
     }
-
-//    private fun getPlaylists() {
-//        viewModelScope.launch {
-//            interactor.getPlaylist().collect {
-//                if (it.isEmpty()) {
-//                    _playlist.value = PlaylistUiState.EmptyPlaylist(it)
-//                } else {
-//                    _playlist.value = PlaylistUiState.HasPlaylists(it)
-//                }
-//            }
-//        }
-//    }
 }

@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.createPlaylist.domain.model.Playlist
@@ -17,7 +16,6 @@ import com.example.playlistmaker.mediateka.playlist.ui.PlaylistViewModel
 import com.example.playlistmaker.utils.Constants
 import com.example.playlistmaker.utils.Constants.NAVIGATE_FROM_PLAYLIST
 import com.example.playlistmaker.utils.Constants.PLAYLIST_ID
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediatekaFragment : Fragment() {
@@ -58,7 +56,7 @@ class MediatekaFragment : Fragment() {
         }
     }
 
-    private fun createNewPlaylist(){
+    private fun createNewPlaylist() {
         val bundle = bundleOf(NAVIGATE_FROM_PLAYLIST to "true")
         findNavController().navigate(
             R.id.action_mediatekaFragment_to_createPlaylistFragment,
@@ -66,7 +64,7 @@ class MediatekaFragment : Fragment() {
         )
     }
 
-    private fun clickCurrentPlaylist(playlist: Playlist){
+    private fun clickCurrentPlaylist(playlist: Playlist) {
         val bundle = bundleOf(PLAYLIST_ID to playlist.id, NAVIGATE_FROM_PLAYLIST to "true")
         findNavController().navigate(
             R.id.action_mediatekaFragment_to_currentPlaylistFragment,

@@ -1,6 +1,5 @@
 package com.example.playlistmaker.mediateka
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
@@ -18,25 +17,29 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.playlistmaker.R
 import com.example.playlistmaker.createPlaylist.domain.model.Playlist
 import com.example.playlistmaker.mediateka.favorite.ui.FavoriteScreen
+import com.example.playlistmaker.mediateka.favorite.ui.FavoriteState
 import com.example.playlistmaker.mediateka.favorite.ui.FavoritesTracksViewModel
 import com.example.playlistmaker.mediateka.playlist.ui.PlaylistScreen
+import com.example.playlistmaker.mediateka.playlist.ui.PlaylistState
 import com.example.playlistmaker.mediateka.playlist.ui.PlaylistViewModel
+import com.example.playlistmaker.player.domain.model.Track
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MediatekaScreen(
     viewModelFavorite: FavoritesTracksViewModel,
@@ -45,13 +48,32 @@ fun MediatekaScreen(
     onClickCurrentPlaylist: (playlist: Playlist) -> Unit
 ) {
 
-    Log.d("TAG", "MediatekaScreen")
     val stateFavorite by viewModelFavorite.state.collectAsState()
     val statePlaylist by viewModelPlaylist.state.collectAsState()
 
+    MediatekaScreen(
+        stateFavorite = stateFavorite,
+        statePlaylist = statePlaylist,
+        onClickCreatePlaylist = onClickCreatePlaylist,
+        onClickCurrentPlaylist = onClickCurrentPlaylist,
+        onClickPlayer = viewModelFavorite::onClick
+    )
+
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun MediatekaScreen(
+    stateFavorite: FavoriteState,
+    statePlaylist: PlaylistState,
+    onClickCreatePlaylist: () -> Unit,
+    onClickCurrentPlaylist: (playlist: Playlist) -> Unit,
+    onClickPlayer: (track: Track) -> Unit
+) {
+
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState(pageCount = { 2 })
-    val selectedTabIndex = rememberSaveable { pagerState.currentPage }
+    val selectedTabIndex = remember { pagerState.currentPage }
 
     Column(
         modifier = Modifier
@@ -68,6 +90,7 @@ fun MediatekaScreen(
             ),
             letterSpacing = 0.sp
         )
+
         TabRow(
             modifier = Modifier.fillMaxWidth(),
             selectedTabIndex = selectedTabIndex,
@@ -78,7 +101,7 @@ fun MediatekaScreen(
             indicator = @Composable { tabPositions ->
                 if (selectedTabIndex < tabPositions.size) {
                     TabRowDefaults.SecondaryIndicator(
-                        Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
+                        Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
                         color = if (isSystemInDarkTheme()) colorResource(id = R.color.white) else colorResource(
                             id = R.color.black
                         )
@@ -141,7 +164,7 @@ fun MediatekaScreen(
             when (page) {
                 0 -> FavoriteScreen(
                     state = stateFavorite,
-                    onClick = viewModelFavorite::onClick
+                    onClick = onClickPlayer
                 )
 
                 1 -> PlaylistScreen(
@@ -150,6 +173,27 @@ fun MediatekaScreen(
                     onClickNewPlaylist = onClickCreatePlaylist
                 )
             }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MediatekaScreenPreview() {
+    val stateFavorite by remember {
+        mutableStateOf(FavoriteState.Initial)
+    }
+    val statePlaylist by remember {
+        mutableStateOf(PlaylistState.Initial)
+    }
+    Column(modifier = Modifier.fillMaxSize()) {
+        MediatekaScreen(
+            stateFavorite = stateFavorite,
+            statePlaylist = statePlaylist,
+            onClickCreatePlaylist = { },
+            onClickCurrentPlaylist = {}
+        ) {
+
         }
     }
 }

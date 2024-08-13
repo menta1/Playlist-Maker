@@ -105,7 +105,7 @@ fun SettingsScreen(
 }
 
 @Composable
-private fun ItemSettings(text: Int, icon: Int, state: Boolean,  onClick: () -> Unit) {
+private fun ItemSettings(text: Int, icon: Int, state: Boolean, onClick: () -> Unit) {
 
     Row(
         modifier = Modifier.fillMaxWidth(),

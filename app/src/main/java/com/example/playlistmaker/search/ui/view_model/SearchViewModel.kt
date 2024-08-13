@@ -1,24 +1,25 @@
 package com.example.playlistmaker.search.ui.view_model
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.player.domain.model.Track
 import com.example.playlistmaker.search.domain.SearchInteractor
-import com.example.playlistmaker.search.ui.SearchModelState
+import com.example.playlistmaker.search.ui.SearchEvent
+import com.example.playlistmaker.search.ui.SearchState
 import com.example.playlistmaker.utils.Constants.CLICK_DEBOUNCE_DELAY
 import com.example.playlistmaker.utils.Constants.SEARCH_DEBOUNCE_DELAY
 import com.example.playlistmaker.utils.debounce
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewModel() {
 
-    private val _viewStateController = MutableLiveData<SearchModelState>()
-    val viewStateControllerLiveData: LiveData<SearchModelState> = _viewStateController
-
-    private val _trackHistoryLiveData = MutableLiveData<List<Track>?>()
-    val trackHistoryLiveData: LiveData<List<Track>?> = _trackHistoryLiveData
+    private val _state = MutableStateFlow(SearchState.Initial)
+    val state: StateFlow<SearchState> = _state.asStateFlow()
 
     private var isClickAllowed = true
 
@@ -28,41 +29,42 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
 
     private var textSearch: String = ""
 
-    fun updateView() {
-        if (_viewStateController.value == SearchModelState.HistoryEmpty ||
-            _viewStateController.value == SearchModelState.HistoryNotEmpty ||
-            _viewStateController.value == null
-        ) {
-            _trackHistoryLiveData.value = searchInteractor.showTrackHistory()
-            if (_trackHistoryLiveData.value!!.isEmpty()) {
-                _viewStateController.value = SearchModelState.HistoryEmpty
+    fun onEvent(event: SearchEvent) {
+        when (event) {
+            is SearchEvent.ClickTrack -> onClick(track = event.track)
+            SearchEvent.ClearHistory -> clearHistory()
+            is SearchEvent.TextChangedInput -> onTextChangedInput(text = event.text)
+            SearchEvent.ClearTextField -> {
+                textSearch = ""
+                onFocusInput()
+            }
+
+            SearchEvent.RefreshSearch -> refreshSearch()
+        }
+    }
+
+    private fun onFocusInput() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val history = searchInteractor.showTrackHistory()
+            if (history.isEmpty()) {
+                _state.update { SearchState.HistoryEmpty }
             } else {
-                _viewStateController.value = SearchModelState.HistoryNotEmpty
+                _state.update { SearchState.HistoryNotEmpty(history) }
             }
         }
     }
 
-    fun onFocusInput() {
-        _trackHistoryLiveData.value = searchInteractor.showTrackHistory()
-        if (_trackHistoryLiveData.value!!.isEmpty()) {
-            _viewStateController.value = SearchModelState.HistoryEmpty
-        } else {
-            _viewStateController.value = SearchModelState.HistoryNotEmpty
-        }
-
-    }
-
-    fun onTextChangedInput(inputChar: CharSequence?) {
-        textSearch = inputChar.toString()
-        if (_viewStateController.value != SearchModelState.Loading) {
-            _viewStateController.value = SearchModelState.Loading
+    private fun onTextChangedInput(text: String) {
+        textSearch = text
+        if (_state.value != SearchState.Loading) {
+            _state.update { SearchState.Loading }
             searchDebounce(true)
         }
     }
 
-    fun refreshSearch() {
-        if (_viewStateController.value != SearchModelState.Loading) {
-            _viewStateController.value = SearchModelState.Loading
+    private fun refreshSearch() {
+        if (_state.value != SearchState.Loading) {
+            _state.update { SearchState.Loading }
             searchDebounce(true)
         }
     }
@@ -79,12 +81,13 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
         return current
     }
 
-    fun clearHistory() {
+    private fun clearHistory() {
         searchInteractor.clearHistory()
-        _viewStateController.value = SearchModelState.HistoryEmpty
+        _state.update { SearchState.HistoryEmpty }
     }
 
-    fun onClick(track: Track) {
+
+    private fun onClick(track: Track) {
         if (clickDebounce()) {
             viewModelScope.launch { searchInteractor.addTrackHistory(track) }
             searchInteractor.getTracks(track.id)
@@ -92,7 +95,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
         }
     }
 
-    fun searchTracks() {
+    private fun searchTracks() {
         if (textSearch.isNotEmpty()) {
             viewModelScope.launch {
                 searchInteractor.searchTracks(textSearch)
@@ -110,16 +113,19 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
         }
         when {
             errorMessage != null -> {
-                _viewStateController.value = SearchModelState.SearchFail
+                _state.update {
+                    SearchState.SearchFail
+                }
             }
 
             result.isEmpty() -> {
-                _viewStateController.value = SearchModelState.SearchEmpty
+                _state.update { SearchState.SearchEmpty }
             }
 
             else -> {
-                _trackHistoryLiveData.value = foundTracks
-                _viewStateController.value = SearchModelState.SearchSuccess
+                _state.update {
+                    SearchState.SearchSuccess(result)
+                }
             }
         }
     }
