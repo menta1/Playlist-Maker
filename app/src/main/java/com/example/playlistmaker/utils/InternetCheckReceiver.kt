@@ -10,7 +10,7 @@ import androidx.annotation.RequiresApi
 class InternetCheckReceiver : BroadcastReceiver() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onReceive(context: Context?, intent: Intent?) {
-        if ((intent?.action == android.net.ConnectivityManager.CONNECTIVITY_ACTION || intent?.action == Intent.ACTION_AIRPLANE_MODE_CHANGED) && isConnected(
+        if ((intent?.action == android.net.ConnectivityManager.CONNECTIVITY_ACTION || intent?.action == Intent.ACTION_AIRPLANE_MODE_CHANGED) && !isConnected(
                 context
             )
         ) {

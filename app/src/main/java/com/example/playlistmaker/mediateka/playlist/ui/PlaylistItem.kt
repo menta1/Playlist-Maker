@@ -1,5 +1,6 @@
 package com.example.playlistmaker.mediateka.playlist.ui
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -55,7 +57,11 @@ fun PlaylistItem(
             )
         )
         Text(
-            text = playlist.countTracks.toString() + " " + changeEnding(playlist.countTracks),
+            text = pluralStringResource(
+                id = R.plurals.tracks,
+                count = playlist.countTracks,
+                playlist.countTracks
+            ),
             fontFamily = FontFamily(Font(R.font.ys_display_regular)),
             fontSize = 12.sp,
             letterSpacing = 0.sp,
@@ -63,17 +69,5 @@ fun PlaylistItem(
                 id = R.color.black
             )
         )
-    }
-}
-
-private fun changeEnding(count: Int): String {
-    val lastDigit = count % 10
-    val lastTwoDigits = count % 100
-
-    return when {
-        lastTwoDigits in 11..19 -> "треков"
-        lastDigit == 1 -> "трек"
-        lastDigit in 2..4 -> "трека"
-        else -> "треков"
     }
 }

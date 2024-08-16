@@ -19,7 +19,7 @@ class SearchFragment : Fragment() {
 
     private val viewModel by viewModel<SearchViewModel>()
 
-    private val internetCheckReceiver = InternetCheckReceiver()
+    private val internetCheckReceiver by lazy { InternetCheckReceiver() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -69,7 +69,9 @@ fun SearchField(
             BasicTextField(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = 8.dp, vertical = 8.dp),
+                    .padding(
+                        horizontal = 8.dp,
+                        vertical = 8.dp),
                 value = value,
                 onValueChange = onValueChange,
                 interactionSource = interactionSource,

@@ -47,12 +47,12 @@ fun SongItem(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row {
-
             AsyncImage(
                 modifier = Modifier
                     .size(45.dp)
                     .clip(RoundedCornerShape(2.dp)),
-                model = track.artworkUrl60, contentDescription = null
+                model = track.artworkUrl60,
+                contentDescription = null
             )
 
             Spacer(modifier = Modifier.width(8.dp))
@@ -60,11 +60,9 @@ fun SongItem(
             Box(contentAlignment = Alignment.CenterStart) {
 
                 Box(modifier = Modifier.padding(end = 44.dp)) {
-                    Column(
-                        modifier = Modifier.padding(top = 6.dp)
-                    ) {
+                    Column(modifier = Modifier.padding(top = 6.dp)) {
                         Text(
-                            text = track.trackName ?: "",
+                            text = track.trackName.orEmpty(),
                             fontFamily = FontFamily(Font(R.font.ys_display_regular)),
                             fontSize = 16.sp,
                             letterSpacing = 0.sp,
@@ -80,7 +78,7 @@ fun SongItem(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = track.artistName ?: "",
+                                text = track.artistName.orEmpty(),
                                 fontFamily = FontFamily(Font(R.font.ys_display_regular)),
                                 fontSize = 11.sp,
                                 letterSpacing = 0.sp,
@@ -91,12 +89,14 @@ fun SongItem(
                                 overflow = TextOverflow.Ellipsis
                             )
 
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Icon(
-                                painter = painterResource(id = R.drawable.ellipse),
-                                contentDescription = null,
-                                tint = colorResource(id = R.color.grey)
-                            )
+                            if (!track.artistName.isNullOrEmpty()){
+                                Spacer(modifier = Modifier.width(5.dp))
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ellipse),
+                                    contentDescription = null,
+                                    tint = colorResource(id = R.color.grey)
+                                )
+                            }
                             Spacer(modifier = Modifier.width(5.dp))
                             Text(
                                 text = formatterDate(track.trackTimeMillis),
@@ -122,14 +122,24 @@ fun SongItem(
                     Icon(
                         painter = painterResource(id = R.drawable.arrow_forward_24),
                         contentDescription = null,
-                        tint = colorResource(
-                            id = R.color.grey
-                        )
+                        tint = colorResource(id = R.color.grey)
                     )
                 }
             }
 
         }
+    }
+}
+
+private fun formatterDate(date: Int?): String {
+    if (date == null) return "00:00"
+    return try {
+        (SimpleDateFormat(
+            "mm:ss",
+            Locale.getDefault()
+        ).format(date)).toString()
+    } catch (e: Exception) {
+        "00:00"
     }
 }
 
@@ -155,17 +165,5 @@ fun SongItemPreview() {
         ) {
 
         }
-    }
-}
-
-private fun formatterDate(date: Int?): String {
-    if (date == null) return "00:00"
-    return try {
-        (SimpleDateFormat(
-            "mm:ss",
-            Locale.getDefault()
-        ).format(date)).toString()
-    } catch (e: Exception) {
-        "00:00"
     }
 }

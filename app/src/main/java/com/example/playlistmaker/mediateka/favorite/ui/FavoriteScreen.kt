@@ -67,7 +67,8 @@ fun FavoriteScreen(
                 LazyColumn {
                     items(state.tracks) { track ->
                         SongItem(
-                            track = track, onClick = onClick
+                            track = track,
+                            onClick = onClick
                         )
                     }
                 }

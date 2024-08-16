@@ -22,8 +22,6 @@ class MediatekaFragment : Fragment() {
 
     private var toastWasNotShow = true
 
-    private val viewModelFavorite by viewModel<FavoritesTracksViewModel>()
-    private val viewModelPlaylist by viewModel<PlaylistViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -32,8 +30,6 @@ class MediatekaFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 MediatekaScreen(
-                    viewModelFavorite = viewModelFavorite,
-                    viewModelPlaylist = viewModelPlaylist,
                     onClickCreatePlaylist = { createNewPlaylist() },
                     onClickCurrentPlaylist = { clickCurrentPlaylist(it) }
                 )
@@ -41,11 +37,6 @@ class MediatekaFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        viewModelPlaylist.getPlaylists()
-        viewModelFavorite.getAllTracksFavorite()
-        super.onResume()
-    }
 
     private fun showToast(text: String?) {
         if (toastWasNotShow) {

@@ -15,6 +15,7 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,17 +40,23 @@ import com.example.playlistmaker.mediateka.playlist.ui.PlaylistState
 import com.example.playlistmaker.mediateka.playlist.ui.PlaylistViewModel
 import com.example.playlistmaker.player.domain.model.Track
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @Composable
 fun MediatekaScreen(
-    viewModelFavorite: FavoritesTracksViewModel,
-    viewModelPlaylist: PlaylistViewModel,
     onClickCreatePlaylist: () -> Unit,
     onClickCurrentPlaylist: (playlist: Playlist) -> Unit
 ) {
-
+    val viewModelFavorite = koinViewModel<FavoritesTracksViewModel>()
+    val viewModelPlaylist  = koinViewModel<PlaylistViewModel>()
     val stateFavorite by viewModelFavorite.state.collectAsState()
     val statePlaylist by viewModelPlaylist.state.collectAsState()
+
+    LaunchedEffect(key1 = Unit) {
+        viewModelPlaylist.getPlaylists()
+        viewModelFavorite.getAllTracksFavorite()
+    }
 
     MediatekaScreen(
         stateFavorite = stateFavorite,
@@ -85,7 +92,10 @@ fun MediatekaScreen(
             text = stringResource(id = R.string.mediateka),
             fontFamily = FontFamily(Font(R.font.ys_display_medium)),
             fontSize = 22.sp,
-            color = if (isSystemInDarkTheme()) colorResource(id = R.color.white) else colorResource(
+            color =
+            if(isSystemInDarkTheme()) {
+                 colorResource(id = R.color.white)
+            } else colorResource(
                 id = R.color.black
             ),
             letterSpacing = 0.sp
@@ -94,15 +104,21 @@ fun MediatekaScreen(
         TabRow(
             modifier = Modifier.fillMaxWidth(),
             selectedTabIndex = selectedTabIndex,
-            containerColor = if (isSystemInDarkTheme()) colorResource(id = R.color.black) else colorResource(
+            containerColor =
+            if (isSystemInDarkTheme()) {
+                colorResource(id = R.color.black)
+            } else colorResource(
                 id = R.color.white
             ),
             divider = { HorizontalDivider(color = Color.Transparent) },
-            indicator = @Composable { tabPositions ->
+            indicator = { tabPositions ->
                 if (selectedTabIndex < tabPositions.size) {
                     TabRowDefaults.SecondaryIndicator(
                         Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
-                        color = if (isSystemInDarkTheme()) colorResource(id = R.color.white) else colorResource(
+                        color =
+                        if (isSystemInDarkTheme()) {
+                            colorResource(id = R.color.white)
+                        } else colorResource(
                             id = R.color.black
                         )
                     )
@@ -111,10 +127,16 @@ fun MediatekaScreen(
         ) {
             Tab(
                 selected = selectedTabIndex == 0,
-                selectedContentColor = if (isSystemInDarkTheme()) colorResource(id = R.color.white) else colorResource(
+                selectedContentColor =
+                if (isSystemInDarkTheme()) {
+                    colorResource(id = R.color.white)
+                } else colorResource(
                     id = R.color.black
                 ),
-                unselectedContentColor = if (isSystemInDarkTheme()) colorResource(id = R.color.white) else colorResource(
+                unselectedContentColor =
+                if (isSystemInDarkTheme()) {
+                    colorResource(id = R.color.white)
+                } else colorResource(
                     id = R.color.black
                 ),
                 onClick = {
@@ -134,10 +156,16 @@ fun MediatekaScreen(
 
             Tab(
                 selected = selectedTabIndex == 1,
-                selectedContentColor = if (isSystemInDarkTheme()) colorResource(id = R.color.white) else colorResource(
+                selectedContentColor =
+                if (isSystemInDarkTheme()) {
+                    colorResource(id = R.color.white)
+                } else colorResource(
                     id = R.color.black
                 ),
-                unselectedContentColor = if (isSystemInDarkTheme()) colorResource(id = R.color.white) else colorResource(
+                unselectedContentColor =
+                if (isSystemInDarkTheme()) {
+                    colorResource(id = R.color.white)
+                } else colorResource(
                     id = R.color.black
                 ),
                 onClick = {
@@ -157,7 +185,8 @@ fun MediatekaScreen(
         }
 
         HorizontalPager(
-            state = pagerState, modifier = Modifier
+            state = pagerState,
+            modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
         ) { page ->

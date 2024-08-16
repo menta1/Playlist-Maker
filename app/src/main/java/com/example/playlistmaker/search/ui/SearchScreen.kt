@@ -17,6 +17,7 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,7 +46,9 @@ fun SearchScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    SearchScreen(state = state, onEvent = viewModel::onEvent)
+    SearchScreen(
+        state = state,
+        onEvent = viewModel::onEvent)
 }
 
 @Composable
@@ -79,13 +82,12 @@ fun SearchScreen(
 
         SearchField(value = search,
             onValueChange = { newSearch ->
-                Log.d("TAG", "onValueChange = ${newSearch}")
                 search = newSearch
-                onEvent(SearchEvent.TextChangedInput(search))
+                onEvent(Search.TextChangedInput(search))
             },
             onClearField = {
                 search = ""
-                onEvent(SearchEvent.ClearTextField)
+                onEvent(Clear.ClearTextField)
             })
 
 
@@ -96,9 +98,7 @@ fun SearchScreen(
 
             when (state) {
                 SearchState.Default -> {}
-                SearchState.HistoryEmpty -> {
-
-                }
+                SearchState.HistoryEmpty -> {}
 
                 is SearchState.HistoryNotEmpty -> {
 
@@ -119,7 +119,7 @@ fun SearchScreen(
                     LazyColumn {
                         items((state).tracks) { track ->
                             SongItem(
-                                track = track, onClick = { onEvent(SearchEvent.ClickTrack(track)) }
+                                track = track, onClick = { onEvent(Search.ClickTrack(track)) }
                             )
                         }
                     }
@@ -127,7 +127,7 @@ fun SearchScreen(
                     Spacer(modifier = Modifier.height(24.dp))
 
                     Button(
-                        onClick = { onEvent(SearchEvent.ClearHistory) },
+                        onClick = { onEvent(Clear.ClearHistory) },
                         colors = ButtonColors(
                             containerColor = if (isSystemInDarkTheme()) colorResource(id = R.color.white) else colorResource(
                                 id = R.color.black
@@ -213,7 +213,7 @@ fun SearchScreen(
 
                     Spacer(modifier = Modifier.height(24.dp))
                     Button(
-                        onClick = { onEvent(SearchEvent.RefreshSearch) },
+                        onClick = { onEvent(Search.RefreshSearch) },
                         colors = ButtonColors(
                             containerColor = if (isSystemInDarkTheme()) colorResource(id = R.color.white) else colorResource(
                                 id = R.color.black
@@ -246,7 +246,7 @@ fun SearchScreen(
                     LazyColumn {
                         items((state).tracks) { track ->
                             SongItem(
-                                track = track, onClick = { onEvent(SearchEvent.ClickTrack(track)) }
+                                track = track, onClick = { onEvent(Search.ClickTrack(track)) }
                             )
                         }
                     }

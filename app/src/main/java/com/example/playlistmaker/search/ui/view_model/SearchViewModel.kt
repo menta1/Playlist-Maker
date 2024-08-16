@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.player.domain.model.Track
 import com.example.playlistmaker.search.domain.SearchInteractor
+import com.example.playlistmaker.search.ui.Clear
+import com.example.playlistmaker.search.ui.Search
 import com.example.playlistmaker.search.ui.SearchEvent
 import com.example.playlistmaker.search.ui.SearchState
 import com.example.playlistmaker.utils.Constants.CLICK_DEBOUNCE_DELAY
@@ -31,15 +33,14 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
 
     fun onEvent(event: SearchEvent) {
         when (event) {
-            is SearchEvent.ClickTrack -> onClick(track = event.track)
-            SearchEvent.ClearHistory -> clearHistory()
-            is SearchEvent.TextChangedInput -> onTextChangedInput(text = event.text)
-            SearchEvent.ClearTextField -> {
+            Clear.ClearHistory -> clearHistory()
+            Clear.ClearTextField -> {
                 textSearch = ""
                 onFocusInput()
             }
-
-            SearchEvent.RefreshSearch -> refreshSearch()
+            is Search.ClickTrack -> onClick(track = event.track)
+            Search.RefreshSearch -> refreshSearch()
+            is Search.TextChangedInput -> onTextChangedInput(text = event.text)
         }
     }
 
