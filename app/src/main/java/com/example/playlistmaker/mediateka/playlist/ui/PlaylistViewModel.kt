@@ -5,23 +5,30 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.mediateka.playlist.domain.PlaylistInteractor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class PlaylistViewModel(private val interactor: PlaylistInteractor) : ViewModel() {
-    private val _playlist: MutableStateFlow<PlaylistUiState> = MutableStateFlow(
-        PlaylistUiState.HasPlaylists(
-            emptyList()
-        )
-    )
-    val playlist: StateFlow<PlaylistUiState> = _playlist
+
+    private val _state = MutableStateFlow(PlaylistState.Initial)
+    val state: StateFlow<PlaylistState> = _state.asStateFlow()
+
+    init {
+        getPlaylists()
+    }
 
     fun getPlaylists() {
         viewModelScope.launch {
-            interactor.getPlaylist().collect {
-                if (it.isEmpty()) {
-                    _playlist.value = PlaylistUiState.EmptyPlaylist(it)
+            interactor.getPlaylist().collect { result ->
+                if (result.isEmpty()) {
+                    _state.update {
+                        PlaylistState.Empty
+                    }
                 } else {
-                    _playlist.value = PlaylistUiState.HasPlaylists(it)
+                    _state.update {
+                        PlaylistState.Success(result)
+                    }
                 }
             }
         }

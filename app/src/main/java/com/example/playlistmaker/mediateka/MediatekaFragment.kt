@@ -5,53 +5,38 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.compose.ui.platform.ComposeView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.FragmentMediatekaBinding
+import com.example.playlistmaker.createPlaylist.domain.model.Playlist
+import com.example.playlistmaker.mediateka.favorite.ui.FavoritesTracksViewModel
+import com.example.playlistmaker.mediateka.playlist.ui.PlaylistViewModel
 import com.example.playlistmaker.utils.Constants
-import com.google.android.material.tabs.TabLayoutMediator
+import com.example.playlistmaker.utils.Constants.NAVIGATE_FROM_PLAYLIST
+import com.example.playlistmaker.utils.Constants.PLAYLIST_ID
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediatekaFragment : Fragment() {
-    private lateinit var binding: FragmentMediatekaBinding
-    private lateinit var tabLayoutMediator: TabLayoutMediator
+
     private var toastWasNotShow = true
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = FragmentMediatekaBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val textArgument: String? = arguments?.getString(Constants.TEXT_FOR_TOAST)
-        var returnFromCreatePlaylist: Boolean? =
-            arguments?.getBoolean(Constants.RESULT_NAV_CREATE_OR_CURRENT_PLAYLIST)
-
-        showToast(textArgument)
-
-        binding.viewPager.adapter = MediatekaPagerAdapter(childFragmentManager, lifecycle)
-
-        tabLayoutMediator =
-            TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-                when (position) {
-                    0 -> tab.text = getString(R.string.favorites_tracks)
-                    1 -> tab.text = getString(R.string.playlist)
-                }
+        return ComposeView(requireContext()).apply {
+            setContent {
+                MediatekaScreen(
+                    onClickCreatePlaylist = { createNewPlaylist() },
+                    onClickCurrentPlaylist = { clickCurrentPlaylist(it) }
+                )
             }
-        tabLayoutMediator.attach()
-        if (returnFromCreatePlaylist != null) {
-            binding.viewPager.setCurrentItem(1, false)
-            returnFromCreatePlaylist = null
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        tabLayoutMediator.detach()
-    }
 
     private fun showToast(text: String?) {
         if (toastWasNotShow) {
@@ -60,5 +45,28 @@ class MediatekaFragment : Fragment() {
                 toastWasNotShow = false
             }
         }
+    }
+
+    private fun createNewPlaylist() {
+        val bundle = bundleOf(NAVIGATE_FROM_PLAYLIST to "true")
+        findNavController().navigate(
+            R.id.action_mediatekaFragment_to_createPlaylistFragment,
+            bundle
+        )
+    }
+
+    private fun clickCurrentPlaylist(playlist: Playlist) {
+        val bundle = bundleOf(PLAYLIST_ID to playlist.id, NAVIGATE_FROM_PLAYLIST to "true")
+        findNavController().navigate(
+            R.id.action_mediatekaFragment_to_currentPlaylistFragment,
+            bundle
+        )
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val textArgument: String? = arguments?.getString(Constants.TEXT_FOR_TOAST)
+        showToast(textArgument)
     }
 }

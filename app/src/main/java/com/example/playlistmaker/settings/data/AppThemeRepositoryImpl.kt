@@ -13,9 +13,7 @@ class AppThemeRepositoryImpl(
     private val context: Context,
     private var sharedPrefs: SharedPreferences
 ) : AppThemeRepository {
-    companion object {
-
-    }
+    companion object;
 
     init {
         initTheme()
