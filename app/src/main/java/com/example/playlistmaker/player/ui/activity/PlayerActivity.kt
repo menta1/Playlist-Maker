@@ -51,11 +51,13 @@ class PlayerActivity : AppCompatActivity(), PlayerAddToPlaylistAdapter.Listener 
     private var playlistTitle: String = ""
     private var playlistId = 0
     private val internetCheckReceiver = InternetCheckReceiver()
+    private var isServiceBind = false
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as MusicService.MusicServiceBinder
             viewModel.setAudioPlayerControl(binder.getService())
+            isServiceBind = true
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -84,7 +86,7 @@ class PlayerActivity : AppCompatActivity(), PlayerAddToPlaylistAdapter.Listener 
     }
 
     private fun unbindMusicService() {
-        unbindService(serviceConnection)
+        if(isServiceBind) unbindService(serviceConnection)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -276,8 +278,8 @@ class PlayerActivity : AppCompatActivity(), PlayerAddToPlaylistAdapter.Listener 
     }
 
     override fun onDestroy() {
-        unbindMusicService()
         super.onDestroy()
+        unbindMusicService()
     }
 
     override fun onResume() {
